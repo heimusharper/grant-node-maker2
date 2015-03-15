@@ -20,6 +20,10 @@ public class Controller {
 
 	}
 
+	/**
+	 * отобразить главное окно приложения
+	 * @return
+	 */
 	public int doShowMainWindow() {
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

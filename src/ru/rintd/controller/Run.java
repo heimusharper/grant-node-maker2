@@ -7,27 +7,24 @@ import org.apache.logging.log4j.Logger;
  * Загрузчик приложения, инициализирует контроллер и запускает главное окно
  * 
  * @author sheihar
- *
  */
 
 public class Run {
-	
-	public static final String APPLICATION_NAME = "NodeMaker2";
-	private static final Logger log = LogManager.getLogger("Run");
 
-	private static Controller controller = null;
+    public static final String APPLICATION_NAME = "NodeMaker2";
+    private static final Logger log = LogManager.getLogger(Run.class.getName());
 
-	public static void main(String[] args) {
+    private static Controller controller = null;
 
-		log.info("Application start...");
-		controller = new Controller();
+    public static void main(String[] args) {
 
-		controller.doShowMainWindow();
-		/*
-		 * javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		 * 
-		 * @Override public void run() { controller.doShowMainWindow(); } });
-		 */
-		log.info("Application stop");
-	}
+        log.info("Application start...");
+        controller = new Controller();
+
+        controller.doShowMainWindow();
+        /*
+         * javax.swing.SwingUtilities.invokeLater(new Runnable() {
+         * @Override public void run() { controller.doShowMainWindow(); } });
+         */
+    }
 }
