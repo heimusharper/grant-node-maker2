@@ -1,5 +1,6 @@
 package ru.rintd.view.res;
 
+import java.awt.Insets;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -52,7 +53,11 @@ public class JButtonsStyles {
         button.setToolTipText(BUTTONS_DESCRIPTIONS[type]);
         URL img = JButtonsStyles.class.getResource("icons/" + BUTTONS_FILE[type] + ".png");
         button.setIcon(new ImageIcon(img));
-
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setMargin(new Insets(0, 0, 0, 0));
+        
         return button;
     }
 

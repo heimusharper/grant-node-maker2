@@ -1,5 +1,6 @@
 package ru.rintd.controller;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -22,8 +23,11 @@ public class Controller {
 
     private AppWindow mainWindow;
     private Model model;
-    private static final Logger log = LogManager.getLogger(Controller.class.getName());
+
+    private Dimension windowDimension = new Dimension(1000, 800);
     
+    private static final Logger log = LogManager.getLogger(Controller.class.getName());
+
     public Controller() {
 
     }
@@ -39,9 +43,12 @@ public class Controller {
 
             @Override
             public void run() {
+                
                 // инициализация окна
                 log.info("Init main window...");
-                mainWindow = new AppWindow();
+                mainWindow = new AppWindow(windowDimension);
+                // инициализация ресурсов(модели)
+                model = new Model();
                 // настройка событий
                 log.info("Setting actions...");
                 configureActions();
@@ -80,8 +87,13 @@ public class Controller {
         if (value == JFileChooser.APPROVE_OPTION) {
             log.info("File chooser return APPROVE_OPTION value");
             String filePath = chooser.getSelectedFile().getAbsolutePath();
+            log.info("Load file PATH: "+filePath);
             model.setJsonString(filePath);
             // TODO: отобразить где-то название файла
+            log.info("Start convert building to Polygons...");
+            //log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
+            mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()), mainWindow.getBuildingPanelDimension());
+            //mainWindow.init();
         }
     }
 

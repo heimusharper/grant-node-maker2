@@ -1,6 +1,7 @@
 package ru.rintd.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
@@ -19,19 +20,21 @@ public class AppWindow {
     // логгер
     private static final Logger log = LogManager.getLogger(AppWindow.class.getName());
 
+    private Dimension windowDimension;
+    
     // панели
     private AppWindowButtonsJPane actionButtons;
     private BuildingPanel buildingPanel;
 
-    public AppWindow() {
+    public AppWindow(Dimension dimension) {
 
+        this.windowDimension = dimension;
         log.info("Start intrface...");
         mainFrame = new JFrame();
         setDefaults();
         setButtonsPanel();
-        setBuildingPanel(null);
+        setToDrawPolygons(null, null);
         mainFrame.setVisible(true);
-        buildingPanel.get
     }
 
     /**
@@ -40,7 +43,7 @@ public class AppWindow {
     public void setDefaults() {
         log.info("Set default params in window");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1000, 800);
+        mainFrame.setSize(windowDimension);
         this.setTitle(null);
     }
 
@@ -77,7 +80,7 @@ public class AppWindow {
      */
     private void setButtonsPanel() {
         actionButtons = new AppWindowButtonsJPane();
-        mainFrame.add(actionButtons, BorderLayout.WEST);
+        mainFrame.add(actionButtons, BorderLayout.NORTH);
     }
 
     /**
@@ -98,12 +101,24 @@ public class AppWindow {
     /**
      * 
      */
-    private void setBuildingPanel(ToDrawPolygons[] toDrawPolygons){
+    public void setToDrawPolygons(ToDrawPolygons[] toDrawPolygons, Dimension dimension){
+        this.windowDimension = dimension;
         buildingPanel = new BuildingPanel();
+        mainFrame.add(buildingPanel, BorderLayout.CENTER);
+        buildingPanel.setPreferredSize(windowDimension);
+        //log.info("SET DIM:"+windowDimension);
         if (toDrawPolygons != null)
             buildingPanel.init(toDrawPolygons);
         else
             buildingPanel.init();
-        mainFrame.add(buildingPanel, BorderLayout.CENTER);
+    }
+    
+    public Dimension getBuildingPanelDimension(){
+        //log.info("DIM "+buildingPanel.getSize());
+        return buildingPanel.getSize();
+    }
+    
+    public void init(){
+        buildingPanel.init();
     }
 }

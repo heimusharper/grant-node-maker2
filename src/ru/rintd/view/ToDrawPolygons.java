@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Building.InternLevel;
@@ -30,7 +33,12 @@ public class ToDrawPolygons extends JPanel {
     private double maxYjson = 0;
     private double minYjson = 0;
 
+    private Dimension windowDim = new Dimension();
+
+    private static final Logger log = LogManager.getLogger(ToDrawPolygons.class.getName());
+
     public void setBuilding(Building building, int level) {
+        log.info("Conver Level " + level + ", elements " + building.Level[level].BuildElement.length);
         this.level = level;
         this.setPreferredSize(new Dimension(1000, 800));
         internLevel = building.Level[level];
@@ -72,14 +80,16 @@ public class ToDrawPolygons extends JPanel {
         super.paintComponent(g);
 
         if (internLevel != null) {
+            log.info("Level " + level + " draw..");
             for (ArrayList<DrawableObject> arrayList : objects) {
                 for (DrawableObject drawableObject : arrayList) {
-                    drawableObject.double2int(minXjson, maxXjson, minYjson, maxYjson, this.getWidth(),
-                            this.getHeight(), 1);
-                    g.drawPolygon(drawableObject);
+                    drawableObject.double2int(minXjson, maxXjson, minYjson, maxYjson, windowDim.width,
+                            windowDim.height, 1);
+                    g.fillPolygon(drawableObject);
                 }
             }
         } else {
+            log.warn("Empty level! level " + level);
             // TODO: ошибка - пустой этаж!
         }
     }
@@ -132,9 +142,56 @@ public class ToDrawPolygons extends JPanel {
                 }
             }
         }
+        log.info("Matched XYs: X[" + minXjson + ";" + maxXjson + "], Y[" + minYjson + ";" + maxYjson + "]");
         /*
          * maxXjson += get20perc(maxXjson); maxYjson += get20perc(maxYjson); minXjson -= get20perc(maxXjson); minYjson
          * -= get20perc(maxYjson);
          */
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public InternLevel getInternLevel() {
+        return internLevel;
+    }
+
+    public void setInternLevel(InternLevel internLevel) {
+        this.internLevel = internLevel;
+    }
+
+    public Dimension getWindowDim() {
+        return windowDim;
+    }
+
+    public void setWindowDim(Dimension windowDim) {
+        this.windowDim = windowDim;
+    }
+
+    public ArrayList<ArrayList<DrawableObject>> getObjects() {
+        return objects;
+    }
+
+    public double getMaxXjson() {
+        return maxXjson;
+    }
+
+    public double getMinXjson() {
+        return minXjson;
+    }
+
+    public double getMaxYjson() {
+        return maxYjson;
+    }
+
+    public double getMinYjson() {
+        return minYjson;
+    }
+    
+    
 }
