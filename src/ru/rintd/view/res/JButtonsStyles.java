@@ -5,6 +5,9 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * используются иконки Gnome Project
  * 
@@ -32,6 +35,9 @@ public class JButtonsStyles {
     private final static String[] BUTTONS_FILE = { "document-open", "document-open", "document-save", "edit-rendo-rtl",
             "edit-rendo", "edit-delete", "zoom-in", "zoom-original", "zoom-out" };
 
+    // логгер
+    private static final Logger log = LogManager.getLogger(JButtonsStyles.class.getName());
+
     /**
      * возвращает кнопку по её id
      * 
@@ -40,11 +46,13 @@ public class JButtonsStyles {
      */
     public static JButton getButton(int type) {
 
+        log.info("Generate button type "+type+" ["+BUTTONS_NAMES[type]+" is "+BUTTONS_DESCRIPTIONS[type]+"]");
         JButton button = new JButton();
 
+        button.setToolTipText(BUTTONS_DESCRIPTIONS[type]);
         URL img = JButtonsStyles.class.getResource("icons/" + BUTTONS_FILE[type] + ".png");
         button.setIcon(new ImageIcon(img));
-        
+
         return button;
     }
 

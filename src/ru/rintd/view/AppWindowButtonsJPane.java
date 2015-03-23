@@ -25,6 +25,7 @@ public class AppWindowButtonsJPane extends JPanel {
     JButton openJButton = JButtonsStyles.getButton(JButtonsStyles.OPEN_ID);
     // сохранить
     JButton saveJButton = JButtonsStyles.getButton(JButtonsStyles.SAVE_ID);
+    // TODO: остальные кнопки
     
     //
     

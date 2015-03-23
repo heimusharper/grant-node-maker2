@@ -1,6 +1,7 @@
 package ru.rintd.view;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
@@ -19,15 +20,18 @@ public class AppWindow {
     private static final Logger log = LogManager.getLogger(AppWindow.class.getName());
 
     // панели
-    AppWindowButtonsJPane actionButtons;
-    
+    private AppWindowButtonsJPane actionButtons;
+    private BuildingPanel buildingPanel;
+
     public AppWindow() {
 
         log.info("Start intrface...");
         mainFrame = new JFrame();
         setDefaults();
         setButtonsPanel();
+        setBuildingPanel(null);
         mainFrame.setVisible(true);
+        buildingPanel.get
     }
 
     /**
@@ -57,7 +61,7 @@ public class AppWindow {
         log.info("Set new title: " + applicationTitle + ", old: " + tmp);
         return tmp;
     }
-
+    
     /**
      * добавляет статусное сообщение в заголовок программы типа: <b>"заголовок [ status ]"</b>
      * 
@@ -71,9 +75,35 @@ public class AppWindow {
     /**
      * Встаавить панель с кнопками сверху
      */
-    private void setButtonsPanel(){
+    private void setButtonsPanel() {
         actionButtons = new AppWindowButtonsJPane();
         mainFrame.add(actionButtons, BorderLayout.WEST);
     }
 
+    /**
+     * задать, что делать при нажатии кнопки "Open" (открыть)
+     * @param action действие ActionListener
+     */
+    public void setOpenFileButtonActionListener(ActionListener action) {
+        this.actionButtons.openJButton.addActionListener(action);
+    }
+    
+    /**
+     * задать, что делать при нажатии кнопки "Save" (сохранить)
+     * @param action  действие ActionListener
+     */
+    public void setSaveFileButtonActionListener(ActionListener action) {
+        this.actionButtons.saveJButton.addActionListener(action);
+    }
+    /**
+     * 
+     */
+    private void setBuildingPanel(ToDrawPolygons[] toDrawPolygons){
+        buildingPanel = new BuildingPanel();
+        if (toDrawPolygons != null)
+            buildingPanel.init(toDrawPolygons);
+        else
+            buildingPanel.init();
+        mainFrame.add(buildingPanel, BorderLayout.CENTER);
+    }
 }
