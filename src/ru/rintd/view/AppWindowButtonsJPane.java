@@ -25,6 +25,18 @@ public class AppWindowButtonsJPane extends JPanel {
     JButton openJButton = JButtonsStyles.getButton(JButtonsStyles.OPEN_ID);
     // сохранить
     JButton saveJButton = JButtonsStyles.getButton(JButtonsStyles.SAVE_ID);
+    //отменить
+    JButton undoJButton = JButtonsStyles.getButton(JButtonsStyles.UNDO_ID);
+    // возвратить
+    JButton rendoJButton = JButtonsStyles.getButton(JButtonsStyles.RENDO_ID);
+    // удалить
+    JButton deleteJButton = JButtonsStyles.getButton(JButtonsStyles.DELETE_ID);
+    // zoom +
+    JButton zoomInJButton = JButtonsStyles.getButton(JButtonsStyles.ZOOM_IN_ID);
+    // zoom 0
+    JButton zoom0JButton = JButtonsStyles.getButton(JButtonsStyles.ZOOM_ORIGINAL_ID);
+    // zoom -
+    JButton zoomOutJButton = JButtonsStyles.getButton(JButtonsStyles.ZOOM_OUT_ID);
     // TODO: остальные кнопки
     
     //
@@ -35,6 +47,12 @@ public class AppWindowButtonsJPane extends JPanel {
         this.add(pointerJButton);
         this.add(openJButton);
         this.add(saveJButton);
+        this.add(undoJButton);
+        this.add(rendoJButton);
+        this.add(deleteJButton);
+        this.add(zoomInJButton);
+        this.add(zoom0JButton);
+        this.add(zoomOutJButton);
         
     }
 

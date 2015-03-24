@@ -1,5 +1,6 @@
 package ru.rintd.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -38,9 +39,10 @@ public class ToDrawPolygons extends JPanel {
     private static final Logger log = LogManager.getLogger(ToDrawPolygons.class.getName());
 
     public void setBuilding(Building building, int level) {
-        log.info("Conver Level " + level + ", elements " + building.Level[level].BuildElement.length);
+        log.info("Convert Level " + level + ", elements " + building.Level[level].BuildElement.length);
         this.level = level;
-        this.setPreferredSize(new Dimension(1000, 800));
+        this.setPreferredSize(windowDim);
+        //log.info("DIM setB:"+windowDim);
         internLevel = building.Level[level];
         levelToPolygons();
     }
@@ -51,6 +53,9 @@ public class ToDrawPolygons extends JPanel {
     private void levelToPolygons() {
 
         objects = new ArrayList<ArrayList<DrawableObject>>();
+        for (int i = 0; i < 7; i++){
+        	objects.add(new ArrayList<DrawableObject>());
+        }
         for (int i = 0; i < internLevel.BuildElement.length; i++) {
             BuildElement buildElement = internLevel.BuildElement[i];
 
@@ -65,6 +70,8 @@ public class ToDrawPolygons extends JPanel {
 
                     polygon.addPoint(x, y);
                 }
+                
+                objects.get(getLayer(buildElement.Sign)).add(polygon);
             }
         }
         maximin();
@@ -76,7 +83,7 @@ public class ToDrawPolygons extends JPanel {
      * 
      * @param g гафика
      */
-    public void paintCmponent(Graphics g) {
+    public void paint(Graphics g) {
         super.paintComponent(g);
 
         if (internLevel != null) {
@@ -85,7 +92,9 @@ public class ToDrawPolygons extends JPanel {
                 for (DrawableObject drawableObject : arrayList) {
                     drawableObject.double2int(minXjson, maxXjson, minYjson, maxYjson, windowDim.width,
                             windowDim.height, 1);
+                    g.setColor(getColor(((CustomPolygon)drawableObject).getBuildingType()));
                     g.fillPolygon(drawableObject);
+                    
                 }
             }
         } else {
@@ -119,6 +128,26 @@ public class ToDrawPolygons extends JPanel {
         return 6;
     }
 
+    private Color getColor(String sign) {
+        switch (sign) {
+        case "Room":
+            return new Color(160,160,160);
+        case "Staircase":
+            return new Color(130,130,255);
+        case "Outside":
+            return new Color(255,255,255);
+        case "DoorWayOut":
+            return new Color(100,190,70);
+        case "DoorWayInt":
+            return new Color(190,70,70);
+        case "DoorWay":
+            return new Color(70,100,190);
+        case "Door":
+            return new Color(70,100,190);
+        }
+        return new Color(255,255,255);
+    }
+    
     /**
      * вычисляет максимальные и минимальные координаты json
      */

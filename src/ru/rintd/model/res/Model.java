@@ -46,8 +46,8 @@ public class Model {
         ToDrawPolygons[] toDrawPolygons = new ToDrawPolygons[building.Level.length];
         for (int i = 0; i < toDrawPolygons.length; i++) {
             toDrawPolygons[i] = new ToDrawPolygons();
-            toDrawPolygons[i].setBuilding(building, i);
             toDrawPolygons[i].setWindowDim(dimension);
+            toDrawPolygons[i].setBuilding(building, i);
         }
         return toDrawPolygons;
     }

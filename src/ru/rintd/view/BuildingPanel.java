@@ -1,6 +1,7 @@
 package ru.rintd.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,16 +38,21 @@ public class BuildingPanel extends JPanel {
     public void init(ToDrawPolygons[] toDraw) {
         clear();
         toDrawPolygons = toDraw;
-        for (int i = 0; i < toDraw.length; i++) {
-            JScrollPane jScrollPane = new JScrollPane(toDraw[i]);
+        for (int i = 0; i < toDrawPolygons.length; i++) {
+            JScrollPane jScrollPane = new JScrollPane(toDrawPolygons[i]);
 
             jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-            log.info("DIM:"+this.getSize());
-            log.info("DIM PS:"+this.getPreferredSize());
+            int scrollWidth  = (int) jScrollPane.getVerticalScrollBar().getSize().getWidth();
+            int scrollHeight  = (int) jScrollPane.getHorizontalScrollBar().getSize().getHeight();
+            //log.info("DIM:"+this.getSize());
+            //log.info("DIM PS:"+this.getPreferredSize());
             // log.info("DIM TAB:"+tabbedPane.getSize());
-            toDraw[i].setPreferredSize(this.getPreferredSize());
+            Dimension dim = jScrollPane.getSize();
+            dim.setSize(dim.getWidth()-scrollWidth, dim.getHeight()-scrollHeight);
+            toDrawPolygons[i].setPreferredSize(dim);
             tabbedPane.addTab("Level " + (i + 1), jScrollPane);
+            
         }
     }
 
@@ -61,6 +67,8 @@ public class BuildingPanel extends JPanel {
      * очистка экрана
      */
     public void clear() {
+    	this.remove(tabbedPane);
         tabbedPane = new JTabbedPane();
+        this.add(tabbedPane, BorderLayout.CENTER);
     }
 }

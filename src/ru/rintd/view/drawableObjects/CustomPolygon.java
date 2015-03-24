@@ -130,4 +130,54 @@ public class CustomPolygon extends DrawableObject {
             this.addPoint(x, (int) (y * zoom));
         }
     }
+
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public String getBuildingType() {
+		return buildingType;
+	}
+
+	public void setBuildingType(String buildingType) {
+		this.buildingType = buildingType;
+	}
+
+	public int getLayer() {
+		return layer;
+	}
+
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+
+	public double[] getXpointsf() {
+		return xpointsf;
+	}
+
+	public void setXpointsf(double[] xpointsf) {
+		this.xpointsf = xpointsf;
+	}
+
+	public double[] getYpointsf() {
+		return ypointsf;
+	}
+
+	public void setYpointsf(double[] ypointsf) {
+		this.ypointsf = ypointsf;
+	}
+
+	public int getNpointsf() {
+		return npointsf;
+	}
+
+	public void setNpointsf(int npointsf) {
+		this.npointsf = npointsf;
+	}
+    
+    
 }

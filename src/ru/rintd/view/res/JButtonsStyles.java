@@ -33,8 +33,8 @@ public class JButtonsStyles {
     private final static String[] BUTTONS_DESCRIPTIONS = { "Pointer", "Open", "Save", "Undo", "Rendo", "Delete",
             "ZoomIn", "ZoomNull", "ZoomOut" };
 
-    private final static String[] BUTTONS_FILE = { "document-open", "document-open", "document-save", "edit-rendo-rtl",
-            "edit-rendo", "edit-delete", "zoom-in", "zoom-original", "zoom-out" };
+    private final static String[] BUTTONS_FILE = { "pointer", "document-open", "document-save", "edit-redo-rtl",
+            "edit-redo", "edit-delete", "zoom-in", "zoom-original", "zoom-out" };
 
     // логгер
     private static final Logger log = LogManager.getLogger(JButtonsStyles.class.getName());
@@ -52,6 +52,7 @@ public class JButtonsStyles {
 
         button.setToolTipText(BUTTONS_DESCRIPTIONS[type]);
         URL img = JButtonsStyles.class.getResource("icons/" + BUTTONS_FILE[type] + ".png");
+        System.out.print(">"+BUTTONS_FILE[type] );
         button.setIcon(new ImageIcon(img));
         button.setOpaque(false);
         button.setContentAreaFilled(false);
