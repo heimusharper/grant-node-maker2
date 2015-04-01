@@ -1,0 +1,15 @@
+2015-03-24 19:04:03.169 [main] INFO  ru.rintd.controller.Run - Application start...
+2015-03-24 19:04:03.402 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
+2015-03-24 19:04:03.406 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
+2015-03-24 19:04:03.513 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
+2015-03-24 19:04:03.514 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
+2015-03-24 19:04:03.516 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
+2015-03-24 19:04:03.556 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
+2015-03-24 19:04:03.559 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
+2015-03-24 19:04:03.560 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
+2015-03-24 19:04:03.562 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
+2015-03-24 19:04:03.563 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
+2015-03-24 19:04:03.565 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
+2015-03-24 19:04:03.566 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
+2015-03-24 19:04:03.567 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
+2015-03-24 19:04:03.673 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...
