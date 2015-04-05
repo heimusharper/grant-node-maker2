@@ -1,21 +1,20 @@
 package ru.rintd.view;
 
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ru.rintd.view.res.JButtonsStyles;
 
 public class AppWindowButtonsJPane extends JPanel {
 
-    // выбранный инструмент
-    private int type = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4679491453627123935L;
+	// выбранный инструмент
+    //private int type = 0;
     // логгер
-    private static final Logger log = LogManager.getLogger(AppWindowButtonsJPane.class.getName());
+    //private static final Logger log = LogManager.getLogger(AppWindowButtonsJPane.class.getName());
 
     // кнопки
     // управление

@@ -16,7 +16,11 @@ import org.apache.logging.log4j.Logger;
 
 public class BuildingPanel extends JPanel {
 
-    // логгер
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6531110536272618222L;
+	// логгер
     private static final Logger log = LogManager.getLogger(BuildingPanel.class.getName());
     private JTabbedPane tabbedPane;
     private ToDrawPolygons[] toDrawPolygons;
@@ -37,6 +41,7 @@ public class BuildingPanel extends JPanel {
      */
     public void init(ToDrawPolygons[] toDraw) {
         clear();
+    	log.info("INIT building panel");
         toDrawPolygons = toDraw;
         for (int i = 0; i < toDrawPolygons.length; i++) {
             JScrollPane jScrollPane = new JScrollPane(toDrawPolygons[i]);
@@ -67,6 +72,7 @@ public class BuildingPanel extends JPanel {
      * очистка экрана
      */
     public void clear() {
+    	log.info("Clear building panel...");
     	this.remove(tabbedPane);
         tabbedPane = new JTabbedPane();
         this.add(tabbedPane, BorderLayout.CENTER);

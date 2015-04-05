@@ -1,10 +1,15 @@
 package ru.rintd.view.drawableObjects;
 
+import java.awt.Polygon;
 import java.util.Arrays;
 
 public class CustomPolygon extends DrawableObject {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7915756454031564730L;
+	/**
      * id объекта
      */
     private String buildingId;
@@ -17,15 +22,17 @@ public class CustomPolygon extends DrawableObject {
      * слой
      */
     private int layer = 0;
+    
+    private String output[];
 
     /**
      * координаты в системе JSON'а и их преобразование
      */
-    private double xpointsf[];
-    private double ypointsf[];
-    private int npointsf;
+    public double xpointsf[];
+    public double ypointsf[];
+    public int npointsf;
 
-    public CustomPolygon(String buildingId, String buildingType, int layer) {
+    public CustomPolygon(String buildingId, String buildingType, int layer, String[] ouput) {
         super();
         // минимум у Plygon 4, пусть и тут будет так
         xpointsf = new double[4];
@@ -34,6 +41,7 @@ public class CustomPolygon extends DrawableObject {
         this.buildingId = buildingId;
         this.buildingType = buildingType;
         this.layer = layer;
+        this.output = ouput;
     }
 
     /**
@@ -113,7 +121,7 @@ public class CustomPolygon extends DrawableObject {
      * @param zoom масштаб
      */
     public void double2int(double minXjson, double maxXjson, double minYjson, double maxYjson, int windWidth,
-            int windHeight, int zoom) {
+            int windHeight, double zoom) {
         xpoints = new int[4];
         ypoints = new int[4];
 
@@ -130,6 +138,22 @@ public class CustomPolygon extends DrawableObject {
             this.addPoint(x, (int) (y * zoom));
         }
     }
+
+    public boolean inOutput(String s){
+    	for (String out : output) {
+			if (s.equals(out))
+				return true;
+		}
+    	return false;
+    }
+    
+	public String[] getOutput() {
+		return output;
+	}
+
+	public void setOutput(String[] output) {
+		this.output = output;
+	}
 
 	public String getBuildingId() {
 		return buildingId;
