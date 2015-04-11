@@ -147,4 +147,14 @@ public class AppWindow {
 	public void init() {
 		buildingPanel.init();
 	}
+	
+	public void zoomIn() {
+		buildingPanel.zoomIn();
+	}
+	public void zoomOut() {
+		buildingPanel.zoomOut();
+	}
+	public void zoomDef(){
+		buildingPanel.zoomDef();
+	}
 }

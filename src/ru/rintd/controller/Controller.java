@@ -73,6 +73,15 @@ public class Controller {
 
             }
         });
+        
+        mainWindow.setZoomInButtonActionLinsteber(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.zoomIn();
+				
+			}
+		});
     }
 
     /**

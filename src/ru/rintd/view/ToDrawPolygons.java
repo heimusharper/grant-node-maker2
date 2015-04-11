@@ -3,18 +3,19 @@ package ru.rintd.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Polygon;
 import java.awt.geom.Line2D;
-import java.awt.geom.Line2D.Double;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,6 @@ import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Building.InternLevel;
 import ru.rintd.view.drawableObjects.CustomPolygon;
-import ru.rintd.view.drawableObjects.DrawableObject;
 
 /**
  * по сути - один этаж здания со всем фаршем в нем находящимся
@@ -37,26 +37,70 @@ public class ToDrawPolygons extends JPanel {
 	 */
 	private static final long serialVersionUID = 6751047521759577331L;
 
+	/**
+	 * этаж
+	 */
 	private int level = 0;
 
+	/**
+	 * данные этажа из Building
+	 */
 	private InternLevel internLevel;
 
-	private ArrayList<ArrayList<DrawableObject>> objects;
+	/**
+	 * полигоны, расфасованные по типу.
+	 */
+	private ArrayList<ArrayList<CustomPolygon>> objects;
 
-	private HashMap<String, DrawableObject> objectsMap = new HashMap<String, DrawableObject>();
+	/**
+	 * карта полигонов, введена для быстрого поиска
+	 */
+	private HashMap<String, CustomPolygon> objectsMap = new HashMap<String, CustomPolygon>();
 
+	/**
+	 * максимальные и минимальные значения в json файле
+	 */
 	private double maxXjson = 0;
 	private double minXjson = 0;
 	private double maxYjson = 0;
 	private double minYjson = 0;
 
+	/**
+	 * подстраивание изображениия в окно для отображения сразу всего изображения
+	 */
+	private int adjustmentTo = 1;
+	// возможные значения
+	/**
+	 * по высоте
+	 */
+	public static final int ADJUST_TO_HEIGHT = 0;
+	/**
+	 * по ширине
+	 */
+	public static final int ADJUST_TO_WIDTH = 1;
+
+	/**
+	 * масштаб
+	 */
 	private double zoom = 1;
 
+	/**
+	 * размеры окна
+	 */
 	private Dimension windowDim = new Dimension();
 
+	/**
+	 * логгирование
+	 */
 	private static final Logger log = LogManager.getLogger(ToDrawPolygons.class
 			.getName());
 
+	/**
+	 * 2D Линия - тупиковый путь
+	 * TODO: использовать jts на этапе парсинга json
+	 * @author sheihar
+	 *
+	 */
 	class Line2DCustom {
 		int x1 = 0;
 		int y1 = 0;
@@ -71,6 +115,11 @@ public class ToDrawPolygons extends JPanel {
 			this.y2 = y2;
 		}
 
+		/**
+		 * находится ли хотябы одна точка
+		 * @param p
+		 * @return
+		 */
 		public boolean itersection(Polygon p) {
 			if (p.contains(x1, y1) || p.contains(x2, y2))
 				return true;
@@ -206,6 +255,12 @@ public class ToDrawPolygons extends JPanel {
 
 	}
 
+	public ToDrawPolygons(){
+		// TODO: не работает
+		EmptyBorder eb = new EmptyBorder(new Insets(10, 100, 10, 10));
+		this.setBorder(eb);
+	}
+	
 	public void setBuilding(Building building, int level) {
 		log.info("Convert Level " + level + ", elements "
 				+ building.Level[level].BuildElement.length);
@@ -220,13 +275,17 @@ public class ToDrawPolygons extends JPanel {
 	 * преобразование этажа json в полигоны
 	 */
 	private void levelToPolygons() {
-		
+
 		maximin();
 		
+		if ((maxXjson - minXjson) > (maxYjson - minYjson))
+			adjustmentTo = ADJUST_TO_WIDTH;
+		else
+			adjustmentTo = ADJUST_TO_HEIGHT;
 
-		objects = new ArrayList<ArrayList<DrawableObject>>();
+		objects = new ArrayList<ArrayList<CustomPolygon>>();
 		for (int i = 0; i < 7; i++) {
-			objects.add(new ArrayList<DrawableObject>());
+			objects.add(new ArrayList<CustomPolygon>());
 		}
 		for (int i = 0; i < internLevel.BuildElement.length; i++) {
 			BuildElement buildElement = internLevel.BuildElement[i];
@@ -238,8 +297,8 @@ public class ToDrawPolygons extends JPanel {
 
 				for (int points = 0; points < buildElement.XY[rings].length; points++) {
 
-					double x = buildElement.XY[rings][points][0]-minXjson;
-					double y = buildElement.XY[rings][points][1]-minXjson;
+					double x = buildElement.XY[rings][points][0] - minXjson;
+					double y = buildElement.XY[rings][points][1] - minXjson;
 
 					polygon.addPoint(x, y);
 				}
@@ -250,34 +309,22 @@ public class ToDrawPolygons extends JPanel {
 		}
 		// log.debug("HashMap elems:"+objectsMap.size());
 
-		maxXjson -= minXjson;
-		maxYjson -= minYjson;
-		minXjson -= minXjson;
-		minYjson -= minYjson;
-		
-
-		maxXjson += 2;
-		maxYjson += 2;
-		minXjson -= 2;
-		minYjson -= 2;
 		
 		// создание полигонов для расстановки светофоров у дверей.
 		int i = 0;
-
-		ArrayList<DrawableObject> doorsPoly = new ArrayList<DrawableObject>();
 
 		// даные для расчетов
 		polygonstSyzeRevalidate(minXjson, maxXjson, minYjson, maxYjson,
 				windowDim.width, windowDim.height, zoom);
 
 		// TODO: Очень опасная часть! возможны сножественные NullPointerExeption
-		for (ArrayList<DrawableObject> drawableObjects : objects) {
+		for (ArrayList<CustomPolygon> drawableObjects : objects) {
 			// проходим двери
 			if (isDoor(i) & isDoorIn(i)) {
-				for (DrawableObject door : drawableObjects) {
+				for (CustomPolygon door : drawableObjects) {
 					// это дверь.
-					DrawableObject room1 = null;
-					DrawableObject room2 = null;
+					CustomPolygon room1 = null;
+					CustomPolygon room2 = null;
 					String[] outpt = ((CustomPolygon) door).getOutput();
 					int j = 0;
 					/*
@@ -412,7 +459,7 @@ public class ToDrawPolygons extends JPanel {
 								.isIntersection(room2))
 								| (line4to1.isIntersection(room1) & line4to1
 										.isIntersection(room2))) {
-							
+
 							pol1 = line1to2.getDebugRectangleCenter(
 									((CustomPolygon) door).getBuildingId(),
 									level, outpt, 0.7,
@@ -466,9 +513,9 @@ public class ToDrawPolygons extends JPanel {
 		if (internLevel != null) {
 			log.info("Level " + level + " draw..");
 			int i = 0;
-			for (ArrayList<DrawableObject> arrayList : objects) {
+			for (ArrayList<CustomPolygon> arrayList : objects) {
 				log.info("Draw in type " + i + " size " + arrayList.size());
-				for (DrawableObject drawableObject : arrayList) {
+				for (CustomPolygon drawableObject : arrayList) {
 					// TODO: оптимизировать! убрать этот расчет в самое начало и
 					// изменять координаты помножением
 					// drawableObject.double2int(minXjson, maxXjson, minYjson,
@@ -499,13 +546,13 @@ public class ToDrawPolygons extends JPanel {
 
 		if (internLevel != null) {
 			int i = 0;
-			for (ArrayList<DrawableObject> arrayList : objects) {
-				for (DrawableObject drawableObject : arrayList) {
+			for (ArrayList<CustomPolygon> arrayList : objects) {
+				for (CustomPolygon drawableObject : arrayList) {
 					// TODO: оптимизировать! убрать этот расчет в самое начало и
 					// изменять координаты помножением
 					// if (i != 6) {
 					drawableObject.double2int(minXjson, maxXjson, minYjson,
-							maxYjson, windowDimWidth, windowDimHeight, zoom);
+							maxYjson, windowDimWidth, windowDimHeight, adjustmentTo, zoom);
 					// }
 				}
 				i++;
@@ -702,7 +749,7 @@ public class ToDrawPolygons extends JPanel {
 		this.windowDim = windowDim;
 	}
 
-	public ArrayList<ArrayList<DrawableObject>> getObjects() {
+	public ArrayList<ArrayList<CustomPolygon>> getObjects() {
 		return objects;
 	}
 
@@ -721,5 +768,15 @@ public class ToDrawPolygons extends JPanel {
 	public double getMinYjson() {
 		return minYjson;
 	}
+
+	public double getZoom() {
+		return zoom;
+	}
+
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+	}
+	
+	
 
 }

@@ -3,7 +3,9 @@ package ru.rintd.view.drawableObjects;
 import java.awt.Polygon;
 import java.util.Arrays;
 
-public class CustomPolygon extends DrawableObject {
+import ru.rintd.view.ToDrawPolygons;
+
+public class CustomPolygon extends Polygon {
 
     /**
 	 * 
@@ -22,6 +24,11 @@ public class CustomPolygon extends DrawableObject {
      * слой
      */
     private int layer = 0;
+    
+    /**
+     * этаж
+     */
+	private int level = 0;
     
     private String output[];
 
@@ -121,19 +128,35 @@ public class CustomPolygon extends DrawableObject {
      * @param zoom масштаб
      */
     public void double2int(double minXjson, double maxXjson, double minYjson, double maxYjson, int windWidth,
-            int windHeight, double zoom) {
+            int windHeight, int adjustementTo, double zoom) {
+    	
+    	double maxXjson2 = maxXjson - minXjson;
+		double maxYjson2 = maxYjson - minYjson;
+		double minXjson2 = minXjson - minXjson;
+		double minYjson2 = minYjson - minYjson;
+    	
         xpoints = new int[4];
         ypoints = new int[4];
 
+        double multi = 0;
+        if (adjustementTo == ToDrawPolygons.ADJUST_TO_WIDTH){
+        	multi = windWidth / (maxXjson2 - minXjson2);
+        } else {
+        	if (adjustementTo == ToDrawPolygons.ADJUST_TO_HEIGHT){
+            	multi = windHeight / (maxYjson2 - minYjson2);
+            }
+        }
+        
+        // TODO: неправильно выводится X, изображение выходит за края экрана!
         for (int i = 0; i < npointsf; i++) {
             // TODO: Надо учесть размеры вкладки а не приложения
             // int x = double2int(xpointsf[i], Json2Polygon.minXjson, Json2Polygon.maxXjson,
             // CustomProperties.getWindowWidth())*zoom;
             // int y = double2int(ypointsf[i], Json2Polygon.minYjson, Json2Polygon.maxYjson,
             // CustomProperties.getWindowHeight())*zoom;
-            int x = (int) (double2int(xpointsf[i], minXjson, windWidth / (maxXjson - minXjson)) * zoom);
-            int y = (int) (double2int(ypointsf[i], minYjson, windWidth / (maxXjson - minXjson)));
-            y = translateY(y, double2int(maxYjson, minYjson, windWidth / (maxXjson - minXjson)));
+            int x = (int) (double2int(xpointsf[i]-minXjson, minXjson2, multi) * zoom);
+            int y = (int) (double2int(ypointsf[i]-minYjson, minYjson2, multi));
+            y = translateY(y, double2int(maxYjson2, minYjson2, multi));
 
             this.addPoint(x, (int) (y * zoom));
         }
@@ -203,5 +226,12 @@ public class CustomPolygon extends DrawableObject {
 		this.npointsf = npointsf;
 	}
     
-    
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 }

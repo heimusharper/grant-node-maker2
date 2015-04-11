@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Json2Grid;
 import ru.rintd.view.ToDrawPolygons;
-import ru.rintd.view.drawableObjects.DrawableObject;
 
 public class Model {
 
