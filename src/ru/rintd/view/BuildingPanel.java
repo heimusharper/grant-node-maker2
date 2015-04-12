@@ -61,9 +61,7 @@ public class BuildingPanel extends JPanel {
 			// log.info("DIM PS:"+this.getPreferredSize());
 			// log.info("DIM TAB:"+tabbedPane.getSize());
 			Dimension dim = jScrollPane.getSize();
-			jScrollPane.setPreferredSize(dim);
-			dim.setSize(dim.getWidth() - scrollWidth, dim.getHeight()
-					- scrollHeight);
+			//jScrollPane.setPreferredSize(dim);
 			toDrawPolygons[i].setPreferredSize(dim);
 			tabbedPane.addTab("Level " + (i + 1), jScrollPane);
 
@@ -94,6 +92,7 @@ public class BuildingPanel extends JPanel {
 				toDrawPolygons2.setZoom(zoom);
 			}
 		}
+		this.repaint();
 	}
 	public void zoomOut() {
 		if (zoom >= 1) {
@@ -102,11 +101,13 @@ public class BuildingPanel extends JPanel {
 				toDrawPolygons2.setZoom(zoom);
 			}
 		}
+		this.repaint();
 	}
 	public void zoomDef(){
 		zoom = 1;
 		for (ToDrawPolygons toDrawPolygons2 : toDrawPolygons) {
 			toDrawPolygons2.setZoom(zoom);
 		}
+		this.repaint();
 	}
 }
