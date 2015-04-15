@@ -1,14 +1,11 @@
 package ru.rintd.model.res;
-
-import java.awt.Dimension;
 import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import com.vividsolutions.jts.geom.Polygon;
 import ru.rintd.json2grid.Building;
+import ru.rintd.json2grid.GridTransformation;
 import ru.rintd.json2grid.Json2Grid;
-import ru.rintd.view.ToDrawPolygons;
 
 public class Model {
 
@@ -41,15 +38,9 @@ public class Model {
 
         return building;
     }
-
-    public ToDrawPolygons[] getToDrawPolygons(Dimension dimension) {
-        ToDrawPolygons[] toDrawPolygons = new ToDrawPolygons[building.Level.length];
-        for (int i = 0; i < toDrawPolygons.length; i++) {
-            toDrawPolygons[i] = new ToDrawPolygons();
-            toDrawPolygons[i].setWindowDim(dimension);
-            toDrawPolygons[i].setBuilding(building, i);
-        }
-        return toDrawPolygons;
+    public Polygon[][] getToDrawPolygons() {
+        
+        return GridTransformation.getJts(building);
     }
     
 }

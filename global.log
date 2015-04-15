@@ -1,61 +1,24 @@
-2015-04-11 18:56:40.084 [main] INFO  ru.rintd.controller.Run - Application start...
-2015-04-11 18:56:40.310 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
-2015-04-11 18:56:40.314 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
-2015-04-11 18:56:40.470 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
-2015-04-11 18:56:40.480 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
-2015-04-11 18:56:40.486 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
-2015-04-11 18:56:40.535 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
-2015-04-11 18:56:40.539 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
-2015-04-11 18:56:40.542 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
-2015-04-11 18:56:40.544 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
-2015-04-11 18:56:40.546 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
-2015-04-11 18:56:40.548 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
-2015-04-11 18:56:40.550 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
-2015-04-11 18:56:40.552 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
-2015-04-11 18:56:40.682 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...
-2015-04-11 18:56:42.080 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load open file chooser...
-2015-04-11 18:56:44.798 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - File chooser return APPROVE_OPTION value
-2015-04-11 18:56:44.799 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load file PATH: /home/sheihar/biblio-all.json
-2015-04-11 18:56:44.799 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Get building from: /home/sheihar/biblio-all.json
-2015-04-11 18:56:44.799 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Transform json to building
-2015-04-11 18:56:45.015 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Start convert building to Polygons...
-2015-04-11 18:56:45.020 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 0, elements 179
-2015-04-11 18:56:45.022 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[3.9176096058958034;84.38722503664933], Y[4.188975290567305;48.761257499577084]
-2015-04-11 18:56:45.026 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 1, elements 89
-2015-04-11 18:56:45.027 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[4.082670337369029;84.79272167901229], Y[4.214780635600748;41.817496385163444]
-2015-04-11 18:56:45.028 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 2, elements 64
-2015-04-11 18:56:45.029 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[1.1403923111860386;78.66513350324895], Y[4.195333672154955;41.23319820407899]
-2015-04-11 18:56:45.031 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 3, elements 80
-2015-04-11 18:56:45.032 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[1.188407506904119;72.0679020347126], Y[4.078320179757393;41.196692854683995]
-2015-04-11 18:56:45.033 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 4, elements 76
-2015-04-11 18:56:45.034 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[1.160352526009571;72.01220707226761], Y[4.206737570420139;41.19669281014207]
-2015-04-11 18:56:45.035 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 5, elements 68
-2015-04-11 18:56:45.035 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[0.8908248463103151;72.1360956994881], Y[4.18040022035856;41.19668480018362]
-2015-04-11 18:56:45.036 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Convert Level 6, elements 7
-2015-04-11 18:56:45.037 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Matched XYs: X[48.787545314926284;72.13365628438471], Y[16.697823209553032;28.113305154216317]
-2015-04-11 18:56:45.037 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - Clear building panel...
-2015-04-11 18:56:45.037 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - INIT building panel
-2015-04-11 18:56:45.054 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Init draw polygons...
-2015-04-11 18:56:45.070 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Level 0 draw..
-2015-04-11 18:56:45.071 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 0 size 73
-2015-04-11 18:56:45.090 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 1 size 89
-2015-04-11 18:56:45.098 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 2 size 8
-2015-04-11 18:56:45.099 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 3 size 5
-2015-04-11 18:56:45.100 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 4 size 6
-2015-04-11 18:56:45.101 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 5 size 0
-2015-04-11 18:56:45.101 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 6 size 0
-2015-04-11 18:56:47.696 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;0
-2015-04-11 18:56:47.696 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;0
-2015-04-11 18:56:47.697 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;0
-2015-04-11 18:56:47.697 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;0
-2015-04-11 18:56:47.697 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;-1
-2015-04-11 18:56:47.697 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;0
-2015-04-11 18:56:47.697 [AWT-EventQueue-0] DEBUG ru.rintd.view.ToDrawPolygons - DIMs: 1197;-1
-2015-04-11 18:56:47.705 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Level 0 draw..
-2015-04-11 18:56:47.705 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 0 size 73
-2015-04-11 18:56:47.719 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 1 size 89
-2015-04-11 18:56:47.729 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 2 size 8
-2015-04-11 18:56:47.730 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 3 size 5
-2015-04-11 18:56:47.730 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 4 size 6
-2015-04-11 18:56:47.730 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 5 size 0
-2015-04-11 18:56:47.730 [AWT-EventQueue-0] INFO  ru.rintd.view.ToDrawPolygons - Draw in type 6 size 0
+2015-04-15 11:15:48.269 [main] INFO  ru.rintd.controller.Run - Application start...
+2015-04-15 11:15:48.502 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
+2015-04-15 11:15:48.508 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
+2015-04-15 11:15:48.638 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
+2015-04-15 11:15:48.638 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
+2015-04-15 11:15:48.650 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
+2015-04-15 11:15:48.679 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
+2015-04-15 11:15:48.683 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
+2015-04-15 11:15:48.686 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
+2015-04-15 11:15:48.688 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
+2015-04-15 11:15:48.691 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
+2015-04-15 11:15:48.692 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
+2015-04-15 11:15:48.694 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
+2015-04-15 11:15:48.697 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
+2015-04-15 11:15:48.854 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...
+2015-04-15 11:15:50.528 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load open file chooser...
+2015-04-15 11:15:53.715 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - File chooser return APPROVE_OPTION value
+2015-04-15 11:15:53.716 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load file PATH: /home/sheihar/biblio-all.json
+2015-04-15 11:15:53.716 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Get building from: /home/sheihar/biblio-all.json
+2015-04-15 11:15:53.716 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Transform json to building
+2015-04-15 11:15:53.932 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Start convert building to Polygons...
+2015-04-15 11:15:53.962 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - Clear building panel...
+2015-04-15 11:15:53.968 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - INIT building panel
+2015-04-15 11:15:54.052 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Init draw polygons...

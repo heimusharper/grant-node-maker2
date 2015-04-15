@@ -10,6 +10,10 @@ import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vividsolutions.jts.geom.Polygon;
+
+import ru.sheihar.JtPanel;
+
 /**
  * @author sheihar
  */
@@ -24,7 +28,10 @@ public class BuildingPanel extends JPanel {
 	private static final Logger log = LogManager.getLogger(BuildingPanel.class
 			.getName());
 	private JTabbedPane tabbedPane;
-	private ToDrawPolygons[] toDrawPolygons;
+
+	private Polygon[][] polygons;
+	private JtPanel[] jtPanel;
+
 	private double zoom = 1;
 	private double dZoom = 0.2;
 
@@ -42,27 +49,32 @@ public class BuildingPanel extends JPanel {
 	 * 
 	 * @param toDraw
 	 */
-	public void init(ToDrawPolygons[] toDraw) {
+
+	public void init(Polygon[][] toDraw) {
 		clear();
 		log.info("INIT building panel");
-		toDrawPolygons = toDraw;
-		for (int i = 0; i < toDrawPolygons.length; i++) {
-			JScrollPane jScrollPane = new JScrollPane(toDrawPolygons[i]);
+		polygons = toDraw;
+
+		jtPanel = new JtPanel[polygons.length];
+		int i = 0;
+		for (Polygon[] polygons : toDraw) {
+			jtPanel[i] = new JtPanel(polygons);
+			i++;
+		}
+
+		for (i = 0; i < polygons.length; i++) {
+			JScrollPane jScrollPane = new JScrollPane(jtPanel[i]);
 
 			jScrollPane
 					.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			jScrollPane
 					.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			int scrollWidth = (int) jScrollPane.getVerticalScrollBar()
-					.getSize().getWidth();
-			int scrollHeight = (int) jScrollPane.getHorizontalScrollBar()
-					.getSize().getHeight();
 			// log.info("DIM:"+this.getSize());
 			// log.info("DIM PS:"+this.getPreferredSize());
 			// log.info("DIM TAB:"+tabbedPane.getSize());
 			Dimension dim = jScrollPane.getSize();
-			//jScrollPane.setPreferredSize(dim);
-			toDrawPolygons[i].setPreferredSize(dim);
+			// jScrollPane.setPreferredSize(dim);
+			jtPanel[i].setPreferredSize(dim);
 			tabbedPane.addTab("Level " + (i + 1), jScrollPane);
 
 		}
@@ -88,26 +100,31 @@ public class BuildingPanel extends JPanel {
 	public void zoomIn() {
 		if (zoom < 18) {
 			zoom += dZoom;
-			for (ToDrawPolygons toDrawPolygons2 : toDrawPolygons) {
-				toDrawPolygons2.setZoom(zoom);
-			}
+			if (jtPanel != null)
+				for (JtPanel jtPanel2 : jtPanel) {
+					jtPanel2.setZoom(zoom);
+				}
 		}
 		this.repaint();
 	}
+
 	public void zoomOut() {
 		if (zoom >= 1) {
 			zoom -= dZoom;
-			for (ToDrawPolygons toDrawPolygons2 : toDrawPolygons) {
-				toDrawPolygons2.setZoom(zoom);
-			}
+			if (jtPanel != null)
+				for (JtPanel jtPanel2 : jtPanel) {
+					jtPanel2.setZoom(zoom);
+				}
 		}
 		this.repaint();
 	}
-	public void zoomDef(){
+
+	public void zoomDef() {
 		zoom = 1;
-		for (ToDrawPolygons toDrawPolygons2 : toDrawPolygons) {
-			toDrawPolygons2.setZoom(zoom);
-		}
+		if (jtPanel != null)
+			for (JtPanel jtPanel2 : jtPanel) {
+				jtPanel2.setZoom(zoom);
+			}
 		this.repaint();
 	}
 }

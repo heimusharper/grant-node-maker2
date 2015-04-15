@@ -3,12 +3,10 @@ package ru.rintd.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import com.vividsolutions.jts.geom.Polygon;
 import ru.rintd.controller.Run;
 
 public class AppWindow {
@@ -24,7 +22,7 @@ public class AppWindow {
 	private Dimension windowDimension;
 
 	// панели
-	private AppWindowButtonsJPane actionButtons;
+	private AppWindowButtonsJToolBar actionButtons;
 	private BuildingPanel buildingPanel;
 
 	public AppWindow(Dimension dimension) {
@@ -84,7 +82,7 @@ public class AppWindow {
 	 * Встаавить панель с кнопками сверху
 	 */
 	private void setButtonsPanel() {
-		actionButtons = new AppWindowButtonsJPane();
+		actionButtons = new AppWindowButtonsJToolBar();
 		mainFrame.add(actionButtons, BorderLayout.NORTH);
 	}
 
@@ -126,7 +124,8 @@ public class AppWindow {
 	 * //log.info("SET DIM:"+windowDimension); if (toDrawPolygons != null)
 	 * buildingPanel.init(toDrawPolygons); else buildingPanel.init(); }
 	 */
-	public void setToDrawPolygons(ToDrawPolygons[] toDrawPolygons,
+	
+	public void setToDrawPolygons(Polygon[][] toDrawPolygons,
 			Dimension dimension) {
 		this.windowDimension = dimension;
 		// log.info("SET DIM:"+windowDimension);

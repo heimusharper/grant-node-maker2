@@ -101,7 +101,8 @@ public class Controller {
             // TODO: отобразить где-то название файла
             log.info("Start convert building to Polygons...");
             //log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
-            mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()), mainWindow.getBuildingPanelDimension());
+            //mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()), mainWindow.getBuildingPanelDimension());
+            mainWindow.setToDrawPolygons(model.getToDrawPolygons(), mainWindow.getBuildingPanelDimension());
             //mainWindow.init();
         }
     }

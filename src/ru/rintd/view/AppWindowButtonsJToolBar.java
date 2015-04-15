@@ -1,11 +1,13 @@
 package ru.rintd.view;
 
 import java.awt.FlowLayout;
+
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.JToolBar;
+
 import ru.rintd.view.res.JButtonsStyles;
 
-public class AppWindowButtonsJPane extends JPanel {
+public class AppWindowButtonsJToolBar extends JToolBar {
 
     /**
 	 * 
@@ -40,7 +42,7 @@ public class AppWindowButtonsJPane extends JPanel {
     
     //
     
-    public AppWindowButtonsJPane() {
+    public AppWindowButtonsJToolBar() {
         
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.add(pointerJButton);
