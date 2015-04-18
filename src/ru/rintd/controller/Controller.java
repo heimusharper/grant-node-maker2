@@ -14,97 +14,119 @@ import ru.rintd.model.res.Model;
 import ru.rintd.view.AppWindow;
 
 /**
- * Контроллер. Принимает сигналы интерфейса, передает сигналы модели и снова управляет интерфейсом
+ * Контроллер. Принимает сигналы интерфейса, передает сигналы модели и снова
+ * управляет интерфейсом
  * 
  * @author sheihar
  */
 
 public class Controller {
 
-    private AppWindow mainWindow;
-    private Model model;
+	private AppWindow mainWindow;
+	private Model model;
 
-    private Dimension windowDimension = new Dimension(1000, 800);
-    
-    private static final Logger log = LogManager.getLogger(Controller.class.getName());
+	private Dimension windowDimension = new Dimension(1000, 800);
 
-    public Controller() {
+	private static final Logger log = LogManager.getLogger(Controller.class
+			.getName());
 
-    }
+	public Controller() {
 
-    /**
-     * отобразить главное окно приложения
-     * 
-     * @return
-     */
-    public int doShowMainWindow() {
+	}
 
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+	/**
+	 * отобразить главное окно приложения
+	 * 
+	 * @return
+	 */
+	public int doShowMainWindow() {
 
-            @Override
-            public void run() {
-                
-                // инициализация окна
-                log.info("Init main window...");
-                mainWindow = new AppWindow(windowDimension);
-                // инициализация ресурсов(модели)
-                model = new Model();
-                // настройка событий
-                log.info("Setting actions...");
-                configureActions();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
-            }
-        });
+			@Override
+			public void run() {
 
-        return 0;
-    }
+				// инициализация окна
+				log.info("Init main window...");
+				mainWindow = new AppWindow(windowDimension);
+				// инициализация ресурсов(модели)
+				model = new Model();
+				// настройка событий
+				log.info("Setting actions...");
+				configureActions();
 
-    /**
-     * инициализация всех Action, например, ActionListener's кнопок
-     */
-    private void configureActions() {
-        // кнопка открытия
-        mainWindow.setOpenFileButtonActionListener(new ActionListener() {
+			}
+		});
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // диалог
-                showFileOpenDialog();
+		return 0;
+	}
 
-            }
-        });
-        
-        mainWindow.setZoomInButtonActionLinsteber(new ActionListener() {
-			
+	/**
+	 * инициализация всех Action, например, ActionListener's кнопок
+	 */
+	private void configureActions() {
+		// кнопка открытия
+		mainWindow.setOpenFileButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// диалог
+				showFileOpenDialog();
+
+			}
+		});
+
+		mainWindow.setZoomInButtonActionLinsteber(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.zoomIn();
-				
+
 			}
 		});
-    }
 
-    /**
-     * отобразить диалог открытия файла
-     */
-    private void showFileOpenDialog() {
-        log.info("Load open file chooser...");
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JSON file", "json");
-        chooser.setFileFilter(fileNameExtensionFilter);
-        int value = chooser.showOpenDialog(null);
-        if (value == JFileChooser.APPROVE_OPTION) {
-            log.info("File chooser return APPROVE_OPTION value");
-            String filePath = chooser.getSelectedFile().getAbsolutePath();
-            log.info("Load file PATH: "+filePath);
-            model.setJsonString(filePath);
-            // TODO: отобразить где-то название файла
-            log.info("Start convert building to Polygons...");
-            //log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
-            //mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()), mainWindow.getBuildingPanelDimension());
-            mainWindow.setToDrawPolygons(model.getToDrawPolygons(), mainWindow.getBuildingPanelDimension());
-            //mainWindow.init();
-        }
-    }
+		mainWindow.setZoomOutButtonActionLinsteber(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.zoomOut();
+
+			}
+		});
+		mainWindow.setZoomNULLButtonActionLinsteber(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.zoomDef();
+
+			}
+		});
+	}
+
+	/**
+	 * отобразить диалог открытия файла
+	 */
+	private void showFileOpenDialog() {
+		log.info("Load open file chooser...");
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter(
+				"JSON file", "json");
+		chooser.setFileFilter(fileNameExtensionFilter);
+		int value = chooser.showOpenDialog(null);
+		if (value == JFileChooser.APPROVE_OPTION) {
+			log.info("File chooser return APPROVE_OPTION value");
+			String filePath = chooser.getSelectedFile().getAbsolutePath();
+			log.info("Load file PATH: " + filePath);
+			model.setJsonString(filePath);
+			// TODO: отобразить где-то название файла
+			log.info("Start convert building to Polygons...");
+			// log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
+			// mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()),
+			// mainWindow.getBuildingPanelDimension());
+			mainWindow.setToDrawPolygons(model.getToDrawPolygons(),
+					mainWindow.getBuildingPanelDimension());
+			// mainWindow.init();
+		}
+	}
 
 }

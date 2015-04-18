@@ -110,6 +110,14 @@ public class AppWindow {
 		this.actionButtons.zoomInJButton.addActionListener(action);
 	}
 	
+	public void setZoomOutButtonActionLinsteber(ActionListener action) {
+		this.actionButtons.zoomOutJButton.addActionListener(action);
+	}
+	
+	public void setZoomNULLButtonActionLinsteber(ActionListener action) {
+		this.actionButtons.zoom0JButton.addActionListener(action);
+	}
+	
 	public void setToDrawPolygons() {
 		buildingPanel = new BuildingPanel();
 		buildingPanel.setPreferredSize(windowDimension);

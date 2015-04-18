@@ -1,8 +1,10 @@
 package ru.rintd.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -69,11 +71,14 @@ public class BuildingPanel extends JPanel {
 					.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			jScrollPane
 					.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			// log.info("DIM:"+this.getSize());
-			// log.info("DIM PS:"+this.getPreferredSize());
-			// log.info("DIM TAB:"+tabbedPane.getSize());
-			Dimension dim = jScrollPane.getSize();
-			// jScrollPane.setPreferredSize(dim);
+			/*
+			 * log.info("DIM:"+this.getSize());
+			 * log.info("DIM PS:"+this.getPreferredSize());
+			 * log.info("DIM TAB:"+tabbedPane.getSize());
+			 */
+			// jScrollPane.setViewportBorder(BorderFactory.createLineBorder(Color.BLUE));
+			Dimension dim = this.getSize();
+			dim.setSize(dim.getWidth() * 2, dim.getHeight() * 2);
 			jtPanel[i].setPreferredSize(dim);
 			tabbedPane.addTab("Level " + (i + 1), jScrollPane);
 
@@ -102,7 +107,11 @@ public class BuildingPanel extends JPanel {
 			zoom += dZoom;
 			if (jtPanel != null)
 				for (JtPanel jtPanel2 : jtPanel) {
-					jtPanel2.setZoom(zoom);
+					// jtPanel2.setZoom(zoom);
+					jtPanel2.setPreferredSize(new Dimension((int) (jtPanel2
+							.getWidth() * (1 + dZoom)), (int) (jtPanel2
+							.getHeight() * (1 + dZoom))));
+					jtPanel2.repaint();
 				}
 		}
 		this.repaint();
@@ -113,7 +122,11 @@ public class BuildingPanel extends JPanel {
 			zoom -= dZoom;
 			if (jtPanel != null)
 				for (JtPanel jtPanel2 : jtPanel) {
-					jtPanel2.setZoom(zoom);
+					// jtPanel2.setZoom(zoom);
+					jtPanel2.setPreferredSize(new Dimension((int) (jtPanel2
+							.getWidth() * (1 - dZoom)), (int) (jtPanel2
+							.getHeight() * (1 - dZoom))));
+					jtPanel2.repaint();
 				}
 		}
 		this.repaint();
@@ -122,9 +135,19 @@ public class BuildingPanel extends JPanel {
 	public void zoomDef() {
 		zoom = 1;
 		if (jtPanel != null)
-			for (JtPanel jtPanel2 : jtPanel) {
-				jtPanel2.setZoom(zoom);
-			}
+			if (zoom != 1)
+				do {
+					if (zoom != 1) {
+						for (JtPanel jtPanel2 : jtPanel) {
+							jtPanel2.setPreferredSize(new Dimension(
+									(int) (jtPanel2.getWidth() * (1 - dZoom)),
+									(int) (jtPanel2.getHeight() * (1 - dZoom))));
+							jtPanel2.repaint();
+						}
+						zoom -= dZoom;
+					}
+				} while (zoom > 1);
+
 		this.repaint();
 	}
 }
