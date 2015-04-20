@@ -42,5 +42,10 @@ public class Model {
         
         return GridTransformation.getJts(building);
     }
+
+	public Building getBuilding() {
+		return building;
+	}
+    
     
 }

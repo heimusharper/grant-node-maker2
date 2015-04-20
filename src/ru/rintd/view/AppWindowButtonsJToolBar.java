@@ -1,7 +1,5 @@
 package ru.rintd.view;
 
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
@@ -38,13 +36,24 @@ public class AppWindowButtonsJToolBar extends JToolBar {
     JButton zoom0JButton = JButtonsStyles.getButton(JButtonsStyles.ZOOM_ORIGINAL_ID);
     // zoom -
     JButton zoomOutJButton = JButtonsStyles.getButton(JButtonsStyles.ZOOM_OUT_ID);
+    // сенсоры
+    JButton sensorAddJButton = JButtonsStyles.getButton(JButtonsStyles.SENSOR_YELOW);
+    // светофоры
+    JButton lightAddJButton = JButtonsStyles.getButton(JButtonsStyles.LIGHT_YELOW);
+    // указатели
+    JButton pointersAddJButton = JButtonsStyles.getButton(JButtonsStyles.POINTER_YELOW);
+    // сервер
+    JButton serverAddJButton = JButtonsStyles.getButton(JButtonsStyles.SERVER_YELOW);
+    // настройки
+    JButton preferencesButton = JButtonsStyles.getButton(JButtonsStyles.PREFERENCES_ID);
+    
     // TODO: остальные кнопки
     
     //
     
     public AppWindowButtonsJToolBar() {
         
-        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //this.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.add(pointerJButton);
         this.add(openJButton);
         this.add(saveJButton);
@@ -54,6 +63,12 @@ public class AppWindowButtonsJToolBar extends JToolBar {
         this.add(zoomInJButton);
         this.add(zoom0JButton);
         this.add(zoomOutJButton);
+        this.add(preferencesButton);
+        this.addSeparator();
+        this.add(sensorAddJButton);
+        this.add(lightAddJButton);
+        this.add(pointersAddJButton);
+        this.add(serverAddJButton);
         
     }
 

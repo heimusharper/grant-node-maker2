@@ -1,17 +1,26 @@
 package ru.rintd.controller;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ru.rintd.json2grid.BuildElement;
 import ru.rintd.model.res.Model;
 import ru.rintd.view.AppWindow;
+import ru.rintd.view.MultiPanel;
+import ru.sheihar.JtPanel;
 
 /**
  * Контроллер. Принимает сигналы интерфейса, передает сигналы модели и снова
@@ -23,15 +32,18 @@ import ru.rintd.view.AppWindow;
 public class Controller {
 
 	private AppWindow mainWindow;
+	private MultiPanel multiPanel;
 	private Model model;
+	private AppPreferences appPreferences;
 
-	private Dimension windowDimension = new Dimension(1000, 800);
+	private Dimension windowDimension;
 
 	private static final Logger log = LogManager.getLogger(Controller.class
 			.getName());
 
 	public Controller() {
-
+		appPreferences = new AppPreferences();
+		windowDimension = appPreferences.getWindowDim();
 	}
 
 	/**
@@ -49,6 +61,7 @@ public class Controller {
 				// инициализация окна
 				log.info("Init main window...");
 				mainWindow = new AppWindow(windowDimension);
+				setOnCloseWindow();
 				// инициализация ресурсов(модели)
 				model = new Model();
 				// настройка событий
@@ -101,6 +114,94 @@ public class Controller {
 
 			}
 		});
+
+	}
+
+	private void configureActionsAfter() {
+
+		JtPanel[] jtPanels = mainWindow.getJtPanel();
+		for (JtPanel jtPanel : jtPanels) {
+			jtPanel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					BuildElement buildElement = jtPanel.getXYelement(e.getX(),
+							e.getY());
+					// System.out.println(">"+buildElement.Id);
+					if (buildElement != null)
+						multiPanel.setBuildElement(buildElement);
+					else
+						multiPanel.setBuilding(model.getBuilding());
+					super.mouseClicked(e);
+
+				}
+			});
+		}
+	}
+
+	/**
+	 * правая информационно-настроечная панель
+	 */
+	private void setMultiPanel() {
+		multiPanel = new MultiPanel();
+		mainWindow.add(multiPanel, BorderLayout.EAST);
+	}
+
+	private void setOnCloseWindow() {
+		mainWindow.setWindowClosing(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				String[] opStrings = { "Yes", "No" };
+				int n = JOptionPane.showOptionDialog(e.getWindow(),
+						"Close window?", "Close", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, opStrings,
+						opStrings[0]);
+				if (n == 0){
+					e.getWindow().setVisible(false);
+					appPreferences.windowWidth = e.getWindow().getWidth();
+					appPreferences.windowHeight = e.getWindow().getHeight();
+					appPreferences.saveAll();
+					System.exit(0);
+				}
+
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	/**
@@ -126,6 +227,8 @@ public class Controller {
 			mainWindow.setToDrawPolygons(model.getToDrawPolygons(),
 					mainWindow.getBuildingPanelDimension());
 			// mainWindow.init();
+			setMultiPanel();
+			configureActionsAfter();
 		}
 	}
 

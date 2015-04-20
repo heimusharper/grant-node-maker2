@@ -1,10 +1,7 @@
 package ru.rintd.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -111,7 +108,6 @@ public class BuildingPanel extends JPanel {
 					jtPanel2.setPreferredSize(new Dimension((int) (jtPanel2
 							.getWidth() * (1 + dZoom)), (int) (jtPanel2
 							.getHeight() * (1 + dZoom))));
-					jtPanel2.repaint();
 				}
 		}
 		this.repaint();
@@ -126,7 +122,6 @@ public class BuildingPanel extends JPanel {
 					jtPanel2.setPreferredSize(new Dimension((int) (jtPanel2
 							.getWidth() * (1 - dZoom)), (int) (jtPanel2
 							.getHeight() * (1 - dZoom))));
-					jtPanel2.repaint();
 				}
 		}
 		this.repaint();
@@ -142,7 +137,6 @@ public class BuildingPanel extends JPanel {
 							jtPanel2.setPreferredSize(new Dimension(
 									(int) (jtPanel2.getWidth() * (1 - dZoom)),
 									(int) (jtPanel2.getHeight() * (1 - dZoom))));
-							jtPanel2.repaint();
 						}
 						zoom -= dZoom;
 					}
@@ -150,4 +144,11 @@ public class BuildingPanel extends JPanel {
 
 		this.repaint();
 	}
+
+	public JtPanel[] getJtPanel() {
+		return jtPanel;
+	}
+
+	
+	
 }

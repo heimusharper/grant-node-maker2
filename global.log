@@ -1,24 +1,20 @@
-2015-04-18 15:53:13.402 [main] INFO  ru.rintd.controller.Run - Application start...
-2015-04-18 15:53:13.571 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
-2015-04-18 15:53:13.575 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
-2015-04-18 15:53:13.688 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
-2015-04-18 15:53:13.689 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
-2015-04-18 15:53:13.698 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
-2015-04-18 15:53:13.721 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
-2015-04-18 15:53:13.725 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
-2015-04-18 15:53:13.728 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
-2015-04-18 15:53:13.731 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
-2015-04-18 15:53:13.734 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
-2015-04-18 15:53:13.737 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
-2015-04-18 15:53:13.740 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
-2015-04-18 15:53:13.742 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
-2015-04-18 15:53:13.879 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...
-2015-04-18 15:53:15.402 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load open file chooser...
-2015-04-18 15:53:18.010 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - File chooser return APPROVE_OPTION value
-2015-04-18 15:53:18.011 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load file PATH: /home/sheihar/biblio-all.json
-2015-04-18 15:53:18.011 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Get building from: /home/sheihar/biblio-all.json
-2015-04-18 15:53:18.011 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Transform json to building
-2015-04-18 15:53:18.236 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Start convert building to Polygons...
-2015-04-18 15:53:18.262 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - Clear building panel...
-2015-04-18 15:53:18.264 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - INIT building panel
-2015-04-18 15:53:18.300 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Init draw polygons...
+2015-04-20 23:51:51.542 [main] INFO  ru.rintd.controller.Run - Application start...
+2015-04-20 23:51:51.782 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
+2015-04-20 23:51:51.785 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
+2015-04-20 23:51:51.911 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
+2015-04-20 23:51:51.912 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
+2015-04-20 23:51:51.923 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
+2015-04-20 23:51:51.950 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
+2015-04-20 23:51:51.955 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
+2015-04-20 23:51:51.958 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
+2015-04-20 23:51:51.960 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
+2015-04-20 23:51:51.962 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
+2015-04-20 23:51:51.965 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
+2015-04-20 23:51:51.968 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
+2015-04-20 23:51:51.971 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
+2015-04-20 23:51:51.973 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 17 [Sensor NULL is Sensor NULL]
+2015-04-20 23:51:51.975 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 11 [Light NULL is Light NULL]
+2015-04-20 23:51:51.977 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 14 [Pointer NULL is Pointer NULL]
+2015-04-20 23:51:51.980 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 20 [Server NULL is Server NULL]
+2015-04-20 23:51:51.982 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 21 [Preferences is Preferences]
+2015-04-20 23:51:52.180 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...

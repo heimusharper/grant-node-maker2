@@ -1,13 +1,20 @@
 package ru.rintd.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
+
 import javax.swing.JFrame;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import com.vividsolutions.jts.geom.Polygon;
+
 import ru.rintd.controller.Run;
+import ru.sheihar.JtPanel;
 
 public class AppWindow {
 
@@ -44,6 +51,7 @@ public class AppWindow {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(windowDimension);
 		this.setTitle(null);
+		
 	}
 
 	/**
@@ -86,6 +94,7 @@ public class AppWindow {
 		mainFrame.add(actionButtons, BorderLayout.NORTH);
 	}
 
+	
 	/**
 	 * задать, что делать при нажатии кнопки "Open" (открыть)
 	 * 
@@ -164,4 +173,19 @@ public class AppWindow {
 	public void zoomDef(){
 		buildingPanel.zoomDef();
 	}
+	
+	public JtPanel[] getJtPanel(){
+		return buildingPanel.getJtPanel();
+	}
+	
+	public void add(Component com, Object constrainst ){
+		
+		mainFrame.add(com, constrainst);
+	}
+
+	public void setWindowClosing(WindowListener listener){
+		mainFrame.addWindowListener(listener);
+	}
+	
 }
+
