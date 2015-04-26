@@ -11,6 +11,7 @@ import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
@@ -19,8 +20,10 @@ import ru.rintd.json2grid.BuildElement;
 
 import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.awt.ShapeWriter;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 
 public class JtPanel extends JPanel {
 
@@ -30,9 +33,17 @@ public class JtPanel extends JPanel {
 	private static final long serialVersionUID = 8270609114688328489L;
 
 	/**
-	 * Массив полигонов TODO: перевести в Geometry!
+	 * Массив полигонов
 	 */
 	public Polygon[] polygons;
+	/**
+	 * для быстрого доступа
+	 */
+	public HashMap<String, Polygon> hashMapPolys = new HashMap<String, Polygon>();
+	/**
+	 * буферы дверей
+	 */
+	private ArrayList<Geometry> buffers = new ArrayList<Geometry>();
 	/**
 	 * перевод Geometry в Shape2D
 	 */
@@ -75,12 +86,57 @@ public class JtPanel extends JPanel {
 			minX = Math.min(minX, shape.getBounds2D().getMinX());
 			minY = Math.min(minY, shape.getBounds2D().getMinY());
 		}
+		for (int i = 0; i < p.length; i++) {
+			hashMapPolys.put(((BuildElement) p[i].getUserData()).Id, p[i]);
+		}
+		genDoorBuffers();
 
 	}
 
 	public JtPanel() {
 		super();
 		this.setBackground(Color.WHITE);
+	}
+
+	private void genDoorBuffers() {
+		for (int i = 0; i < polygons.length; i++) {
+			BuildElement buildElement = (BuildElement) polygons[i]
+					.getUserData();
+			if (isDoor(buildElement.Sign)) {
+				if (buildElement.Output.length == 2) {
+					Polygon room0 = hashMapPolys.get(buildElement.Output[0]);
+					Polygon room1 = hashMapPolys.get(buildElement.Output[1]);
+
+					if (room0 != null && room1 != null) {
+						Geometry buff = polygons[i].buffer(0.2);
+						try {
+
+							Geometry pol1 = buff.intersection(room0);
+							Geometry pol2 = buff.intersection(room1);
+							buffers.add(pol1);
+							buffers.add(pol2);
+						} catch (TopologyException e) {
+							System.out.println(">>>>>>>>>>>>>>>"
+									+ buildElement.Id);
+						}
+					}
+				}
+				if (buildElement.Output.length == 1) {
+					Polygon room0 = hashMapPolys.get(buildElement.Output[0]);
+					try {
+
+						Geometry buff = polygons[i].buffer(10.0);
+
+						Geometry pol1 = buff.intersection(room0);
+						buffers.add(pol1);
+					} catch (TopologyException e) {
+						System.out.println(">>>>>>>>>>>>>>>" + buildElement.Id);
+					}
+
+				}
+
+			}
+		}
 	}
 
 	public void paint(Graphics g) {
@@ -100,12 +156,33 @@ public class JtPanel extends JPanel {
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setStroke(new BasicStroke(2));
 			for (Polygon polygon : polygons) {
-				// TODO: убрать, больше универсальности
 				BuildElement buildElement = (BuildElement) polygon
 						.getUserData();
 
 				Shape shape = shapeWriter.toShape(polygon);
+				
 				g2d.setPaint(getColor(buildElement.Sign));
+				if (buildElement.Id
+						.substring(buildElement.Id.length() - 5,
+								buildElement.Id.length() - 1).equals("52fa")
+						| buildElement.Id
+								.substring(buildElement.Id.length() - 5,
+										buildElement.Id.length() - 1)
+								.equals("0076")
+						| buildElement.Id
+								.substring(buildElement.Id.length() - 5,
+										buildElement.Id.length() - 1)
+								.equals("c1c1")
+						| buildElement.Id
+								.substring(buildElement.Id.length() - 5,
+										buildElement.Id.length() - 1)
+								.equals("ec8d")
+						| buildElement.Id
+								.substring(buildElement.Id.length() - 5,
+										buildElement.Id.length() - 1)
+								.equals("920e")) {
+					g2d.setColor(Color.GREEN);
+				}
 				g2d.fill(shape);
 
 				for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
@@ -116,24 +193,59 @@ public class JtPanel extends JPanel {
 				}
 
 				if (Controller.appPreferences.showLabelsPlan) {
-					Point p = polygon.getCentroid();
-					p = polygon.getInteriorPoint();
-					centroids.add(p);
-					ids.add(buildElement.Id);
-					// System.out.println("fill " + shape.getBounds2D());
+
+					try {
+						Point p = polygon.getCentroid();
+						p = polygon.getInteriorPoint();
+						centroids.add(p);
+						ids.add(buildElement.Id);
+						// System.out.println("fill " + shape.getBounds2D());
+					} catch (TopologyException e) {
+						System.out.println(">>>>>>>>>>>>>>>" + buildElement.Id);
+					}
 				}
 
 			}
+			g2d.setColor(Color.PINK);
+			for (int i = 0; i < buffers.size(); i++) {
+				Shape shape = shapeWriter.toShape(buffers.get(i));
+				g2d.fill(shape);
+			}
+
 			if (Controller.appPreferences.showLabelsPlan) {
-				g2d.setFont(new Font(Controller.appPreferences.fontPlan, getFontType(Controller.appPreferences.fontType), Controller.appPreferences.fontSize));
+				g2d.setFont(new Font(Controller.appPreferences.fontPlan,
+						getFontType(Controller.appPreferences.fontType),
+						Controller.appPreferences.fontSize));
 				g2d.setColor(Color.BLACK);
 				for (int i = 0; i < centroids.size(); i++) {
 					Point point = centroids.get(i);
 					Shape s = shapeWriter.toShape(point);
+					if (ids.get(i)
+							.substring(ids.get(i).length() - 5,
+									ids.get(i).length() - 1).equals("52fa")
+							| ids.get(i)
+									.substring(ids.get(i).length() - 5,
+											ids.get(i).length() - 1)
+									.equals("0076")
+							| ids.get(i)
+									.substring(ids.get(i).length() - 5,
+											ids.get(i).length() - 1)
+									.equals("c1c1")
+							| ids.get(i)
+									.substring(ids.get(i).length() - 5,
+											ids.get(i).length() - 1)
+									.equals("ec8d")
+							| ids.get(i)
+									.substring(ids.get(i).length() - 5,
+											ids.get(i).length() - 1)
+									.equals("920e")) {
+						g2d.setColor(Color.GREEN);
+					}
 					g2d.drawString(
 							ids.get(i).substring(ids.get(i).length() - 5,
 									ids.get(i).length() - 1), s.getBounds().x,
 							s.getBounds().y);
+					g2d.setColor(Color.BLACK);
 				}
 
 			}
@@ -190,6 +302,26 @@ public class JtPanel extends JPanel {
 			return Color.ORANGE;
 		}
 		return new Color(255, 0, 255);
+	}
+
+	private boolean isDoor(String sign) {
+		switch (sign) {
+		case "Room":
+			return false;
+		case "Staircase":
+			return false;
+		case "Outside":
+			return false;
+		case "DoorWayOut":
+			return false;
+		case "DoorWayInt":
+			return true;
+		case "DoorWay":
+			return true;
+		case "Door":
+			return true;
+		}
+		return false;
 	}
 
 	private void setscale() {
