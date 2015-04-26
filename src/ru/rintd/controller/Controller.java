@@ -20,7 +20,8 @@ import ru.rintd.json2grid.BuildElement;
 import ru.rintd.model.res.Model;
 import ru.rintd.view.AppWindow;
 import ru.rintd.view.MultiPanel;
-import ru.sheihar.JtPanel;
+import ru.rintd.view.PropertiesFrame;
+import ru.rintd.view.jtsView.JtPanel;
 
 /**
  * Контроллер. Принимает сигналы интерфейса, передает сигналы модели и снова
@@ -34,7 +35,8 @@ public class Controller {
 	private AppWindow mainWindow;
 	private MultiPanel multiPanel;
 	private Model model;
-	private AppPreferences appPreferences;
+	public static AppPreferences appPreferences;
+	private PropertiesFrame props;
 
 	private Dimension windowDimension;
 
@@ -66,6 +68,8 @@ public class Controller {
 				model = new Model();
 				// настройка событий
 				log.info("Setting actions...");
+				props = new PropertiesFrame(appPreferences);
+				props.setVisible(false);
 				configureActions();
 
 			}
@@ -78,6 +82,7 @@ public class Controller {
 	 * инициализация всех Action, например, ActionListener's кнопок
 	 */
 	private void configureActions() {
+		
 		// кнопка открытия
 		mainWindow.setOpenFileButtonActionListener(new ActionListener() {
 
@@ -114,11 +119,21 @@ public class Controller {
 
 			}
 		});
+		mainWindow.setPropertiesButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				props.setVisible(true);
+				
+			}
+		});
 
 	}
 
 	private void configureActionsAfter() {
 
+		// клик по области здания и сама его инициализация
 		JtPanel[] jtPanels = mainWindow.getJtPanel();
 		for (JtPanel jtPanel : jtPanels) {
 			jtPanel.addMouseListener(new MouseAdapter() {

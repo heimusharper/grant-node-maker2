@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.vividsolutions.jts.geom.Polygon;
 
 import ru.rintd.controller.Run;
-import ru.sheihar.JtPanel;
+import ru.rintd.view.jtsView.JtPanel;
 
 public class AppWindow {
 
@@ -125,6 +125,9 @@ public class AppWindow {
 	
 	public void setZoomNULLButtonActionLinsteber(ActionListener action) {
 		this.actionButtons.zoom0JButton.addActionListener(action);
+	}
+	public void setPropertiesButtonActionListener(ActionListener actionListener){
+		this.actionButtons.preferencesButton.addActionListener(actionListener);
 	}
 	
 	public void setToDrawPolygons() {

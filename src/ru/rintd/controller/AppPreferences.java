@@ -9,11 +9,13 @@ public class AppPreferences {
 	
 	public int windowWidth = 1000;
 	public int windowHeight = 800;
+	public boolean planGrid = true;
 	
 	public AppPreferences(){
 		preferences = Preferences.userNodeForPackage(AppPreferences.class);
 		windowWidth = preferences.getInt("windowWidth", 1000);
 		windowHeight = preferences.getInt("windowHeight", 800);
+		planGrid = preferences.getBoolean("planGrid", true);
 	}
 	
 	public Dimension getWindowDim() {
@@ -23,5 +25,6 @@ public class AppPreferences {
 	public void saveAll(){
 		preferences.putInt("windowWidth", windowWidth);
 		preferences.putInt("windowHeight", windowHeight);
+		preferences.putBoolean("planGrid", planGrid);
 	}
 }

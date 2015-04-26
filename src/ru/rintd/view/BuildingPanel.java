@@ -2,6 +2,7 @@ package ru.rintd.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -9,9 +10,10 @@ import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ru.rintd.view.jtsView.JtPanel;
+
 import com.vividsolutions.jts.geom.Polygon;
 
-import ru.sheihar.JtPanel;
 
 /**
  * @author sheihar

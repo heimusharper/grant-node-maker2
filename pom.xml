@@ -21,10 +21,11 @@
 			<artifactId>json2grid</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>Jts2View</groupId>
-			<artifactId>Jts2View</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>com.vividsolutions</groupId>
+			<artifactId>jts</artifactId>
+			<version>1.13</version>
 		</dependency>
 	</dependencies>
 
