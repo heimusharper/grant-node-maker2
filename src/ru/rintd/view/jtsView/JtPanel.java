@@ -3,17 +3,23 @@ package ru.rintd.view.jtsView;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
+
 import ru.rintd.controller.Controller;
 import ru.rintd.json2grid.BuildElement;
+
 import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.awt.ShapeWriter;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 public class JtPanel extends JPanel {
@@ -81,6 +87,8 @@ public class JtPanel extends JPanel {
 		if (polygons != null) {
 			// получаем масштаб
 			setscale();
+			ArrayList<Point> centroids = new ArrayList<Point>();
+			ArrayList<String> ids = new ArrayList<String>();
 			// определяем преобразования
 			viewport = new Viewport(this.getSize(), scaler * zoom);
 			// определяем конвертер по точкам
@@ -99,6 +107,7 @@ public class JtPanel extends JPanel {
 				Shape shape = shapeWriter.toShape(polygon);
 				g2d.setPaint(getColor(buildElement.Sign));
 				g2d.fill(shape);
+
 				for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
 					g2d.setPaint(Color.WHITE);
 					Shape shapeEx = shapeWriter.toShape(polygon
@@ -106,7 +115,27 @@ public class JtPanel extends JPanel {
 					g2d.fill(shapeEx);
 				}
 
-				// System.out.println("fill " + shape.getBounds2D());
+				if (Controller.appPreferences.showLabelsPlan) {
+					Point p = polygon.getCentroid();
+					p = polygon.getInteriorPoint();
+					centroids.add(p);
+					ids.add(buildElement.Id);
+					// System.out.println("fill " + shape.getBounds2D());
+				}
+
+			}
+			if (Controller.appPreferences.showLabelsPlan) {
+				g2d.setFont(new Font(Controller.appPreferences.fontPlan, getFontType(Controller.appPreferences.fontType), Controller.appPreferences.fontSize));
+				g2d.setColor(Color.BLACK);
+				for (int i = 0; i < centroids.size(); i++) {
+					Point point = centroids.get(i);
+					Shape s = shapeWriter.toShape(point);
+					g2d.drawString(
+							ids.get(i).substring(ids.get(i).length() - 5,
+									ids.get(i).length() - 1), s.getBounds().x,
+							s.getBounds().y);
+				}
+
 			}
 
 			// сетка
@@ -126,6 +155,20 @@ public class JtPanel extends JPanel {
 							(int) (i * (scaler * zoom)), this.getHeight());
 				}
 			}
+		}
+	}
+
+	private int getFontType(String s) {
+		switch (s) {
+		case "PLAIN":
+			return Font.PLAIN;
+		case "BOLD":
+			return Font.BOLD;
+		case "ITALIC":
+			return Font.ITALIC;
+
+		default:
+			return Font.PLAIN;
 		}
 	}
 
