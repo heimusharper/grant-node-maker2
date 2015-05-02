@@ -64,22 +64,30 @@ public class BuildingPanel extends JPanel {
 		}
 
 		for (i = 0; i < polygons.length; i++) {
-			JScrollPane jScrollPane = new JScrollPane(jtPanel[i]);
+			final int exi = i;
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					JScrollPane jScrollPane = new JScrollPane(jtPanel[exi]);
 
-			jScrollPane
-					.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			jScrollPane
-					.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			/*
-			 * log.info("DIM:"+this.getSize());
-			 * log.info("DIM PS:"+this.getPreferredSize());
-			 * log.info("DIM TAB:"+tabbedPane.getSize());
-			 */
-			// jScrollPane.setViewportBorder(BorderFactory.createLineBorder(Color.BLUE));
-			Dimension dim = this.getSize();
-			dim.setSize(dim.getWidth() * 2, dim.getHeight() * 2);
-			jtPanel[i].setPreferredSize(dim);
-			tabbedPane.addTab("Level " + (i + 1), jScrollPane);
+					jScrollPane
+							.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+					jScrollPane
+							.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+					/*
+					 * log.info("DIM:"+this.getSize());
+					 * log.info("DIM PS:"+this.getPreferredSize());
+					 * log.info("DIM TAB:"+tabbedPane.getSize());
+					 */
+					// jScrollPane.setViewportBorder(BorderFactory.createLineBorder(Color.BLUE));
+					Dimension dim = getSize();
+					dim.setSize(dim.getWidth() * 2, dim.getHeight() * 2);
+					jtPanel[exi].setPreferredSize(dim);
+					tabbedPane.addTab("Level " + (exi + 1), jScrollPane);
+					
+				}
+			});
 
 		}
 	}

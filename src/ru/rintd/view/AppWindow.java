@@ -130,6 +130,10 @@ public class AppWindow {
 		this.actionButtons.preferencesButton.addActionListener(actionListener);
 	}
 	
+	public void setAddSensorButtonActionListener(ActionListener actionListener){
+		this.actionButtons.sensorAddJButton.addActionListener(actionListener);
+	}
+	
 	public void setToDrawPolygons() {
 		buildingPanel = new BuildingPanel();
 		buildingPanel.setPreferredSize(windowDimension);
