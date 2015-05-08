@@ -17,7 +17,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ru.rintd.json2grid.BuildElement;
+import ru.rintd.json2grid.Node;
+import ru.rintd.model.res.AddNodeSomeAction;
 import ru.rintd.model.res.Model;
+import ru.rintd.model.res.SomeActionS;
 import ru.rintd.view.AppWindow;
 import ru.rintd.view.MultiPanel;
 import ru.rintd.view.PropertiesFrame;
@@ -32,12 +35,29 @@ import ru.rintd.view.jtsView.JtPanel;
 
 public class Controller {
 
+	// главное окно приложения
 	private AppWindow mainWindow;
+	// панель информации справа
 	private MultiPanel multiPanel;
+	// модель данных
 	private Model model;
+	// настройки приложения
 	public static AppPreferences appPreferences;
+	// окно настроек приложения
 	private PropertiesFrame props;
+	// Система событий
+	private SomeActionS actionS;
+	// нструмент
+	private int instrument = 0;
+	
+	private final int NO_REACTION = 0;
+	private final int ADD_SENSOR = 1;
+	private final int DELETE = -1;
+	private final int ADD_LIGHT = 2;
+	private final int ADD_POINTER = 3;
+	private final int ADD_SERVER = 4;
 
+	// размеры изображения
 	private Dimension windowDimension;
 
 	private static final Logger log = LogManager.getLogger(Controller.class
@@ -66,6 +86,8 @@ public class Controller {
 				setOnCloseWindow();
 				// инициализация ресурсов(модели)
 				model = new Model();
+				// инициализация событий
+				actionS = new SomeActionS(model);
 				// настройка событий
 				log.info("Setting actions...");
 				props = new PropertiesFrame(appPreferences);
@@ -94,6 +116,7 @@ public class Controller {
 			}
 		});
 
+		// масштаб ++
 		mainWindow.setZoomInButtonActionLinsteber(new ActionListener() {
 
 			@Override
@@ -103,6 +126,7 @@ public class Controller {
 			}
 		});
 
+		// масштаб --
 		mainWindow.setZoomOutButtonActionLinsteber(new ActionListener() {
 
 			@Override
@@ -111,6 +135,7 @@ public class Controller {
 
 			}
 		});
+		// масштаб 00
 		mainWindow.setZoomNULLButtonActionLinsteber(new ActionListener() {
 
 			@Override
@@ -119,6 +144,7 @@ public class Controller {
 
 			}
 		});
+		// кнопка открытия настроек
 		mainWindow.setPropertiesButtonActionListener(new ActionListener() {
 
 			@Override
@@ -128,33 +154,54 @@ public class Controller {
 
 			}
 		});
+		
+		mainWindow.setAddSensorButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				instrument = ADD_SENSOR;
+				
+			}
+		});
 
 	}
 
+	/**
+	 * настройки после инициализации здания
+	 */
 	private void configureActionsAfter() {
 
 		// клик по области здания и сама его инициализация
 		JtPanel[] jtPanels = mainWindow.getJtPanel();
+		int i = 0;
 		for (JtPanel jtPanel : jtPanels) {
+			final int is = i;
 			jtPanel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					ExtendBuildingElement buildElement = jtPanel.getXYelement(
-							e.getX(), e.getY());
+
+					// поиск элемента
+					BuildElement buildElement = jtPanel.getXYelement(e.getX(),
+							e.getY());
 					// System.out.println(">"+buildElement.Id);
-					if (buildElement != null)
-						if (buildElement.selected == -1) {
-							multiPanel.setBuildElement(buildElement);
-						} else {
-
-						}
-					else
+					if (buildElement != null) {
+						// вне здания - вывод информации о здании
+						multiPanel.setBuildElement(buildElement);
+					} else {
+						// попали в элемент - вывод инфы о элементе
 						multiPanel.setBuilding(model.getBuilding());
-
+						if (instrument == ADD_SENSOR){
+							// добавление сенсора
+							// TODO: преобразовать координаты и подставить вместо 0 0
+							Node node = new Node(buildElement.Id, ADD_SENSOR, 0, 0);
+							actionS.push(new AddNodeSomeAction(node, is));
+						}
+					}
 					super.mouseClicked(e);
 
 				}
 			});
+			i++;
 		}
 	}
 
@@ -166,6 +213,9 @@ public class Controller {
 		mainWindow.add(multiPanel, BorderLayout.EAST);
 	}
 
+	/**
+	 * вот это портянка
+	 */
 	private void setOnCloseWindow() {
 		mainWindow.setWindowClosing(new WindowListener() {
 
@@ -195,17 +245,23 @@ public class Controller {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
+				// вывод окна подтверждения выхода
 				String[] opStrings = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(e.getWindow(),
 						"Close window?", "Close", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, opStrings,
 						opStrings[0]);
 				if (n == 0) {
+					// скрываем окно
 					e.getWindow().setVisible(false);
+					// сохраняем настройки
 					appPreferences.windowWidth = e.getWindow().getWidth();
 					appPreferences.windowHeight = e.getWindow().getHeight();
 					appPreferences.saveAll();
+					// закрываем приложение
 					System.exit(0);
+				} else {
+					// TODO: отмена закрытия
 				}
 
 			}
