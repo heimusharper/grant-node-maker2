@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import ru.rintd.controller.ExtendBuildingElement;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 
@@ -33,6 +34,21 @@ public class MultiPanel extends JPanel {
 		buildText = buildText + "Sign: "+buildElement.Sign+"\n";
 		buildText = buildText + "Type: "+buildElement.Type+"\n";
 		buildText = buildText + "Width: "+buildElement.Width+"\n";
+		
+		area.setText(buildText);
+		
+	}
+	
+	public void setBufferElement(ExtendBuildingElement buildElement){
+		String buildText = "";
+		buildText = "id: "+buildElement.Id+"\n";
+		buildText = buildText + "Name: "+buildElement.Name+"\n";
+		buildText = buildText + "Note: "+buildElement.Note+"\n";
+		buildText = buildText + "Numpeople: "+buildElement.NumPeople+"\n";
+		buildText = buildText + "Sign: "+buildElement.Sign+"\n";
+		buildText = buildText + "Type: "+buildElement.Type+"\n";
+		buildText = buildText + "Width: "+buildElement.Width+"\n";
+		buildText = buildText + "To room id"+buildElement.Output[buildElement.selected];
 		
 		area.setText(buildText);
 		

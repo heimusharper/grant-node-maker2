@@ -1,29 +1,28 @@
-2015-04-26 14:10:24.583 [main] INFO  ru.rintd.controller.Run - Application start...
-2015-04-26 14:10:24.757 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
-2015-04-26 14:10:24.760 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
-2015-04-26 14:10:24.842 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
-2015-04-26 14:10:24.842 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
-2015-04-26 14:10:24.849 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
-2015-04-26 14:10:24.876 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
-2015-04-26 14:10:24.879 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
-2015-04-26 14:10:24.881 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
-2015-04-26 14:10:24.884 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
-2015-04-26 14:10:24.886 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
-2015-04-26 14:10:24.888 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
-2015-04-26 14:10:24.890 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
-2015-04-26 14:10:24.892 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
-2015-04-26 14:10:24.894 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 17 [Sensor NULL is Sensor NULL]
-2015-04-26 14:10:24.897 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 11 [Light NULL is Light NULL]
-2015-04-26 14:10:24.899 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 14 [Pointer NULL is Pointer NULL]
-2015-04-26 14:10:24.903 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 20 [Server NULL is Server NULL]
-2015-04-26 14:10:24.905 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 21 [Preferences is Preferences]
-2015-04-26 14:10:25.037 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...
-2015-04-26 14:10:26.496 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load open file chooser...
-2015-04-26 14:10:30.121 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - File chooser return APPROVE_OPTION value
-2015-04-26 14:10:30.122 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load file PATH: /home/sheihar/4korpus/4k.json
-2015-04-26 14:10:30.122 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Get building from: /home/sheihar/4korpus/4k.json
-2015-04-26 14:10:30.122 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Transform json to building
-2015-04-26 14:10:30.472 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Start convert building to Polygons...
-2015-04-26 14:10:30.498 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - Clear building panel...
-2015-04-26 14:10:30.499 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - INIT building panel
-2015-04-26 14:10:31.151 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Init draw polygons...
+2015-04-28 21:14:58.694 [main] INFO  ru.rintd.controller.Run - Application start...
+2015-04-28 21:14:58.959 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Init main window...
+2015-04-28 21:14:58.963 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Start intrface...
+2015-04-28 21:14:59.078 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set default params in window
+2015-04-28 21:14:59.079 [AWT-EventQueue-0] INFO  ru.rintd.view.AppWindow - Set new title: NodeMaker2, old: 
+2015-04-28 21:14:59.090 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 0 [Pointer is Pointer]
+2015-04-28 21:14:59.119 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 1 [Open is Open]
+2015-04-28 21:14:59.122 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 2 [Save is Save]
+2015-04-28 21:14:59.129 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 3 [Undo is Undo]
+2015-04-28 21:14:59.132 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 4 [Rendo is Rendo]
+2015-04-28 21:14:59.137 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 5 [Delete is Delete]
+2015-04-28 21:14:59.140 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 6 [ZoomIn is ZoomIn]
+2015-04-28 21:14:59.143 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 7 [ZoomNull is ZoomNull]
+2015-04-28 21:14:59.146 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 8 [ZoomOut is ZoomOut]
+2015-04-28 21:14:59.148 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 17 [Sensor NULL is Sensor NULL]
+2015-04-28 21:14:59.151 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 11 [Light NULL is Light NULL]
+2015-04-28 21:14:59.153 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 14 [Pointer NULL is Pointer NULL]
+2015-04-28 21:14:59.157 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 20 [Server NULL is Server NULL]
+2015-04-28 21:14:59.159 [AWT-EventQueue-0] INFO  ru.rintd.view.res.JButtonsStyles - Generate button type 21 [Preferences is Preferences]
+2015-04-28 21:14:59.326 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Setting actions...
+2015-04-28 21:15:01.027 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load open file chooser...
+2015-04-28 21:15:03.032 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - File chooser return APPROVE_OPTION value
+2015-04-28 21:15:03.033 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Load file PATH: /home/sheihar/biblio-all.json
+2015-04-28 21:15:03.036 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Get building from: /home/sheihar/biblio-all.json
+2015-04-28 21:15:03.037 [AWT-EventQueue-0] INFO  ru.rintd.model.res.Model - Transform json to building
+2015-04-28 21:15:03.342 [AWT-EventQueue-0] INFO  ru.rintd.controller.Controller - Start convert building to Polygons...
+2015-04-28 21:15:03.371 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - Clear building panel...
+2015-04-28 21:15:03.372 [AWT-EventQueue-0] INFO  ru.rintd.view.BuildingPanel - INIT building panel

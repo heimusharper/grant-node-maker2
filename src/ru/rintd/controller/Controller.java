@@ -82,7 +82,7 @@ public class Controller {
 	 * инициализация всех Action, например, ActionListener's кнопок
 	 */
 	private void configureActions() {
-		
+
 		// кнопка открытия
 		mainWindow.setOpenFileButtonActionListener(new ActionListener() {
 
@@ -120,12 +120,12 @@ public class Controller {
 			}
 		});
 		mainWindow.setPropertiesButtonActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				props.setVisible(true);
-				
+
 			}
 		});
 
@@ -139,13 +139,18 @@ public class Controller {
 			jtPanel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					BuildElement buildElement = jtPanel.getXYelement(e.getX(),
-							e.getY());
+					ExtendBuildingElement buildElement = jtPanel.getXYelement(
+							e.getX(), e.getY());
 					// System.out.println(">"+buildElement.Id);
 					if (buildElement != null)
-						multiPanel.setBuildElement(buildElement);
+						if (buildElement.selected == -1) {
+							multiPanel.setBuildElement(buildElement);
+						} else {
+
+						}
 					else
 						multiPanel.setBuilding(model.getBuilding());
+
 					super.mouseClicked(e);
 
 				}
@@ -195,7 +200,7 @@ public class Controller {
 						"Close window?", "Close", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, opStrings,
 						opStrings[0]);
-				if (n == 0){
+				if (n == 0) {
 					e.getWindow().setVisible(false);
 					appPreferences.windowWidth = e.getWindow().getWidth();
 					appPreferences.windowHeight = e.getWindow().getHeight();

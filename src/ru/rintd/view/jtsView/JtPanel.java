@@ -16,6 +16,7 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import ru.rintd.controller.Controller;
+import ru.rintd.controller.ExtendBuildingElement;
 import ru.rintd.json2grid.BuildElement;
 
 import com.vividsolutions.jts.awt.PointShapeFactory;
@@ -112,12 +113,39 @@ public class JtPanel extends JPanel {
 						try {
 
 							Geometry pol1 = buff.intersection(room0);
+							ExtendBuildingElement be = (ExtendBuildingElement) buildElement;
+							be.selected = 0;
+							pol1.setUserData(be);
 							Geometry pol2 = buff.intersection(room1);
+							ExtendBuildingElement be2 = (ExtendBuildingElement) buildElement;
+							be2.selected = 1;
+							pol2.setUserData(be2);
 							buffers.add(pol1);
 							buffers.add(pol2);
 						} catch (TopologyException e) {
-							System.out.println(">>>>>>>>>>>>>>>"
+							System.out.println(">2POL>"
 									+ buildElement.Id);
+							try {
+								buff = polygons[i].buffer(0.0);
+
+								buff = buff.buffer(0.2);
+								Geometry pol1 = buff.intersection(room0);
+
+								ExtendBuildingElement be = (ExtendBuildingElement) buildElement;
+								be.selected = 0;
+								pol1.setUserData(be);
+								
+								Geometry pol2 = buff.intersection(room1);
+								
+								ExtendBuildingElement be2 = (ExtendBuildingElement) buildElement;
+								be2.selected = 1;
+								pol2.setUserData(be2);
+								
+								buffers.add(pol1);
+								buffers.add(pol2);
+							} catch (TopologyException e2){
+								System.out.println(e.getMessage());
+							}
 						}
 					}
 				}
@@ -128,9 +156,12 @@ public class JtPanel extends JPanel {
 						Geometry buff = polygons[i].buffer(10.0);
 
 						Geometry pol1 = buff.intersection(room0);
+						ExtendBuildingElement be = (ExtendBuildingElement) buildElement;
+						be.selected = 0;
+						pol1.setUserData(be);
 						buffers.add(pol1);
 					} catch (TopologyException e) {
-						System.out.println(">>>>>>>>>>>>>>>" + buildElement.Id);
+						System.out.println(">1POL>" + buildElement.Id);
 					}
 
 				}
@@ -162,7 +193,7 @@ public class JtPanel extends JPanel {
 				Shape shape = shapeWriter.toShape(polygon);
 				
 				g2d.setPaint(getColor(buildElement.Sign));
-				if (buildElement.Id
+				/*if (buildElement.Id
 						.substring(buildElement.Id.length() - 5,
 								buildElement.Id.length() - 1).equals("52fa")
 						| buildElement.Id
@@ -182,7 +213,7 @@ public class JtPanel extends JPanel {
 										buildElement.Id.length() - 1)
 								.equals("920e")) {
 					g2d.setColor(Color.GREEN);
-				}
+				}*/
 				g2d.fill(shape);
 
 				for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
@@ -201,7 +232,16 @@ public class JtPanel extends JPanel {
 						ids.add(buildElement.Id);
 						// System.out.println("fill " + shape.getBounds2D());
 					} catch (TopologyException e) {
-						System.out.println(">>>>>>>>>>>>>>>" + buildElement.Id);
+						System.out.println(">POINT>" + buildElement.Id);
+						try{
+						polygon = (Polygon) polygon.buffer(0.0);
+						Point p = polygon.getCentroid();
+						p = polygon.getInteriorPoint();
+						centroids.add(p);
+						ids.add(buildElement.Id);
+						} catch (TopologyException e2){
+							System.out.println(e.getMessage());
+						}
 					}
 				}
 
@@ -355,19 +395,25 @@ public class JtPanel extends JPanel {
 
 	}
 
-	public BuildElement getXYelement(int x, int y) {
+	public ExtendBuildingElement getXYelement(int x, int y) {
 
 		setscale();
 		// System.out.println(scaler);
 		viewport = new Viewport(this.getSize(), scaler * zoom);
 		shapeWriter = new ShapeWriter(this.viewport,
 				new PointShapeFactory.Point());
+		Point2D point2d = new Point2D.Double(x, y);
+		for (int i = 0; i < buffers.size(); i++) {
+			Shape shape = shapeWriter.toShape(buffers.get(i));
+			if (shape.contains(point2d)) {
+				return (ExtendBuildingElement) buffers.get(i).getUserData();
+			}
+		}
 		for (Polygon polygon : polygons) {
 			Shape shape = shapeWriter.toShape(polygon);
-			Point2D point2d = new Point2D.Double(x, y);
 			if (shape.contains(point2d)) {
 
-				return (BuildElement) polygon.getUserData();
+				return (ExtendBuildingElement) polygon.getUserData();
 			}
 
 		}
