@@ -19,6 +19,8 @@ import org.apache.logging.log4j.Logger;
 import com.vividsolutions.jts.geom.Coordinate;
 
 import ru.rintd.json2grid.BuildElement;
+import ru.rintd.json2grid.Building;
+import ru.rintd.json2grid.Json2Grid;
 import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.AddNodeSomeAction;
 import ru.rintd.model.res.Model;
@@ -49,7 +51,7 @@ public class Controller {
 	private PropertiesFrame props;
 	// Система событий
 	private SomeActionS actionS;
-	// нструмент
+	// инструмент
 	private int instrument = 0;
 
 	private final int NO_REACTION = 0;
@@ -187,6 +189,31 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				instrument = ADD_SERVER;
+
+			}
+		});
+
+		mainWindow.setPointButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				instrument = NO_REACTION;
+
+			}
+		});
+		mainWindow.setDeleteButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				instrument = DELETE;
+
+			}
+		});
+		mainWindow.setSaveButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showFileSaveDialog();
 
 			}
 		});
@@ -343,15 +370,33 @@ public class Controller {
 			// log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
 			// mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()),
 			// mainWindow.getBuildingPanelDimension());
-			mainWindow.setToDrawPolygons(model.getToDrawPolygons(),
+			mainWindow.setToDrawPolygons(model.getToDrawPolygons(), model.getNodes(),
 					mainWindow.getBuildingPanelDimension());
 			// mainWindow.init();
 			log.info("Set multi panel...");
 			setMultiPanel();
 			log.info("Set actions to building panel...");
 			configureActionsAfter();
-			model.initNodes(model.getBuilding().Level.length);
+			//model.initNodes(model.getBuilding().Level.length);
 		}
 	}
 
+	/**
+	 * диалог сохранения файла
+	 */
+	private void showFileSaveDialog(){
+		log.info("Save file...");
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JSON file", "json");
+		chooser.setFileFilter(fileNameExtensionFilter);
+		int value = chooser.showSaveDialog(null);
+		if (value == JFileChooser.APPROVE_OPTION){
+			String filePath = chooser.getSelectedFile().getAbsolutePath();
+			log.info("Save file to "+filePath + " ...");
+			Building b = model.getBuildingToSave();
+			Json2Grid.saveVMjson(filePath, b);
+			log.info("Save done.");
+		}
+	}
+	
 }

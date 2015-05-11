@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.vividsolutions.jts.geom.Polygon;
 
 import ru.rintd.controller.Run;
+import ru.rintd.json2grid.Node;
 import ru.rintd.view.jtsView.JtPanel;
 
 public class AppWindow {
@@ -142,6 +144,15 @@ public class AppWindow {
 	public void setAddServerButtonActionListener(ActionListener actionListener){
 		this.actionButtons.serverAddJButton.addActionListener(actionListener);
 	}
+	public void setPointButtonActionListener(ActionListener actionListener){
+		this.actionButtons.pointerJButton.addActionListener(actionListener);
+	}
+	public void setDeleteButtonActionListener(ActionListener actionListener){
+		this.actionButtons.deleteJButton.addActionListener(actionListener);
+	}
+	public void setSaveButtonActionListener(ActionListener actionListener){
+		this.actionButtons.saveJButton.addActionListener(actionListener);
+	}
 	
 	
 	public void setToDrawPolygons() {
@@ -159,17 +170,18 @@ public class AppWindow {
 	 * buildingPanel.init(toDrawPolygons); else buildingPanel.init(); }
 	 */
 	
-	public void setToDrawPolygons(Polygon[][] toDrawPolygons,
+	public void setToDrawPolygons(Polygon[][] toDrawPolygons, ArrayList<ArrayList<Node>> nodes,
 			Dimension dimension) {
 		this.windowDimension = dimension;
 		// log.info("SET DIM:"+windowDimension);
 		if (toDrawPolygons != null) {
-			buildingPanel.init(toDrawPolygons);
+			buildingPanel.init(toDrawPolygons, nodes);
 			log.info("Init draw polygons...");
 		} else {
 			buildingPanel.init();
 			log.warn("No to draw polygons!");
 		}
+		actionButtons.fileIsOpened();
 	}
 
 	public Dimension getBuildingPanelDimension() {

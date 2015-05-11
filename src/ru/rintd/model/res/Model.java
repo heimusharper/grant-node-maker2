@@ -39,6 +39,14 @@ public class Model {
 		try {
 			log.info("Transform json to building");
 			building = Json2Grid.getStructure(jsonFilePath);
+
+			for (int i = 0; i < building.Level.length; i++) {
+				nodes.add(new ArrayList<Node>());
+				if (building.Level[i].nodes != null)
+					for (int j = 0; j < building.Level[i].nodes.length; j++) {
+						nodes.get(i).add(building.Level[i].nodes[j]);
+					}
+			}
 		} catch (IOException e) {
 			log.error("Fail get file " + jsonFilePath + " StackTrace: "
 					+ e.getMessage());
@@ -73,13 +81,10 @@ public class Model {
 		log.info("Adding Node " + node + " into level " + level);
 	}
 
-	public void initNodes(int levels) {
-		log.info("Nodes init...");
-		for (int i = 0; i < levels; i++) {
-			nodes.add(new ArrayList<Node>());
-		}
-	}
-
+	/*
+	 * public void initNodes(int levels) { log.info("Nodes init..."); for (int i
+	 * = 0; i < levels; i++) { nodes.add(new ArrayList<Node>()); } }
+	 */
 	public void removeNode(Node node, int level) {
 		int i = 0;
 		log.info("Node search...");
@@ -100,5 +105,18 @@ public class Model {
 		log.info("Node not delete! Node not found! [ node " + node
 				+ " into level " + level + "]");
 	}
+
+	public Building getBuildingToSave() {
+		for (int i = 0; i < building.Level.length; i++) {
+			building.Level[i].nodes = nodes.get(i).toArray(new Node[nodes.get(i).size()]);
+		}
+		return building;
+	}
+
+	public ArrayList<ArrayList<Node>> getNodes() {
+		return nodes;
+	}
+	
+	
 
 }

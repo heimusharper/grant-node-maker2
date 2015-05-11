@@ -4,12 +4,12 @@ import java.awt.Dimension;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.text.NumberFormat;
+//import java.text.NumberFormat;
 
 import com.vividsolutions.jts.awt.PointTransformation;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.PrecisionModel;
+//import com.vividsolutions.jts.geom.Envelope;
+//import com.vividsolutions.jts.geom.PrecisionModel;
 
 public class Viewport implements PointTransformation {
 
@@ -18,14 +18,10 @@ public class Viewport implements PointTransformation {
 	private Dimension viewSize;
 	private double scale = 1;
 
-	private static double INITIAL_SCALE = 1.0;
 	private static int INITIAL_ORIGIN_X = -10;
 	private static int INITIAL_ORIGIN_Y = -10;
 
-	private PrecisionModel scalePM = new PrecisionModel(scale);
-	private NumberFormat scaleFormat;
-
-	private Envelope viewEnvInModel;
+	// private Envelope viewEnvInModel;
 	private java.awt.geom.Point2D.Double srcPt = new java.awt.geom.Point2D.Double(
 			0, 0);
 	private java.awt.geom.Point2D.Double destPt = new java.awt.geom.Point2D.Double(
@@ -88,9 +84,10 @@ public class Viewport implements PointTransformation {
 		}
 
 		// snap to scale grid
-		/*double x = scalePM.makePrecise(destPt.x);
-		double y = scalePM.makePrecise(destPt.y);
-		*/
+		/*
+		 * double x = scalePM.makePrecise(destPt.x); double y =
+		 * scalePM.makePrecise(destPt.y);
+		 */
 		double x = destPt.x;
 		double y = destPt.y;
 
@@ -130,23 +127,18 @@ public class Viewport implements PointTransformation {
 
 	private void update() {
 		updateModelToViewTransform();
-		viewEnvInModel = computeEnvelopeInModel();
+		// viewEnvInModel = computeEnvelopeInModel();
 	}
 
-	private Envelope computeEnvelopeInModel() {
-		return new Envelope(originInModel.getX(), originInModel.getX()
-				+ getWidthInModel(), originInModel.getY(), originInModel.getY()
-				+ getHeightInModel());
-	}
-
-	private double getWidthInModel() {
-		return toModel(viewSize.width);
-	}
-
-	private double getHeightInModel() {
-		return toModel(viewSize.height);
-	}
-
+	/*
+	 * private Envelope computeEnvelopeInModel() { return new
+	 * Envelope(originInModel.getX(), originInModel.getX() + getWidthInModel(),
+	 * originInModel.getY(), originInModel.getY() + getHeightInModel()); }
+	 * 
+	 * private double getWidthInModel() { return toModel(viewSize.width); }
+	 * 
+	 * private double getHeightInModel() { return toModel(viewSize.height); }
+	 */
 	/**
 	 * Converts a distance in the view to a distance in the model.
 	 * 

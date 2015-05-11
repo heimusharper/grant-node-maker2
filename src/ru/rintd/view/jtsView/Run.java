@@ -14,7 +14,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.vividsolutions.jts.geom.Polygon;
 
 import ru.rintd.json2grid.Building;
-import ru.rintd.json2grid.Building.InternLevel;
 import ru.rintd.json2grid.GridTransformation;
 import ru.rintd.json2grid.Json2Grid;
 
