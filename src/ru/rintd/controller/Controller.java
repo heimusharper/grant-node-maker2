@@ -16,6 +16,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.AddNodeSomeAction;
@@ -49,7 +51,7 @@ public class Controller {
 	private SomeActionS actionS;
 	// нструмент
 	private int instrument = 0;
-	
+
 	private final int NO_REACTION = 0;
 	private final int ADD_SENSOR = 1;
 	private final int DELETE = -1;
@@ -154,16 +156,40 @@ public class Controller {
 
 			}
 		});
-		
+
 		mainWindow.setAddSensorButtonActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				instrument = ADD_SENSOR;
-				
+
 			}
 		});
 
+		mainWindow.setAddLightButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				instrument = ADD_LIGHT;
+
+			}
+		});
+		mainWindow.setAddPointerButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				instrument = ADD_POINTER;
+
+			}
+		});
+		mainWindow.setAddServerButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				instrument = ADD_SERVER;
+
+			}
+		});
 	}
 
 	/**
@@ -180,21 +206,34 @@ public class Controller {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 
+					log.info("Click to [" + e.getX() + "; " + e.getY() + "]");
 					// поиск элемента
 					BuildElement buildElement = jtPanel.getXYelement(e.getX(),
 							e.getY());
 					// System.out.println(">"+buildElement.Id);
-					if (buildElement != null) {
+					if (buildElement == null) {
+						log.info("Outside building!");
 						// вне здания - вывод информации о здании
-						multiPanel.setBuildElement(buildElement);
-					} else {
-						// попали в элемент - вывод инфы о элементе
 						multiPanel.setBuilding(model.getBuilding());
-						if (instrument == ADD_SENSOR){
+					} else {
+						log.info("Inside the building!");
+						// попали в элемент - вывод инфы о элементе
+						multiPanel.setBuildElement(buildElement);
+						if (instrument == ADD_SENSOR || instrument == ADD_LIGHT
+								|| instrument == ADD_POINTER
+								|| instrument == ADD_SERVER) {
+							log.info("Add new Node...");
 							// добавление сенсора
-							// TODO: преобразовать координаты и подставить вместо 0 0
-							Node node = new Node(buildElement.Id, ADD_SENSOR, 0, 0);
+							Coordinate coord = jtPanel.getPoint(e.getPoint());
+							log.info("Converted coordinates [" + e.getPoint().x
+									+ "; " + e.getPoint().y + "] -> ["
+									+ coord.x + "; " + coord.y + "]");
+							multiPanel.setClick(coord);
+							Node node = new Node(buildElement.Id, instrument,
+									coord.x, coord.y);
+							log.info("Node: " + node + " push");
 							actionS.push(new AddNodeSomeAction(node, is));
+							jtPanel.setNodes(model.getNodesLevel(is));
 						}
 					}
 					super.mouseClicked(e);
@@ -246,19 +285,23 @@ public class Controller {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				// вывод окна подтверждения выхода
+				log.info("Open window close dialog...");
 				String[] opStrings = { "Yes", "No" };
 				int n = JOptionPane.showOptionDialog(e.getWindow(),
 						"Close window?", "Close", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, opStrings,
 						opStrings[0]);
 				if (n == 0) {
+					log.info("Closing...");
 					// скрываем окно
 					e.getWindow().setVisible(false);
 					// сохраняем настройки
+					log.info("Saving preferences...");
 					appPreferences.windowWidth = e.getWindow().getWidth();
 					appPreferences.windowHeight = e.getWindow().getHeight();
 					appPreferences.saveAll();
 					// закрываем приложение
+					log.info("Exit");
 					System.exit(0);
 				} else {
 					// TODO: отмена закрытия
@@ -303,8 +346,11 @@ public class Controller {
 			mainWindow.setToDrawPolygons(model.getToDrawPolygons(),
 					mainWindow.getBuildingPanelDimension());
 			// mainWindow.init();
+			log.info("Set multi panel...");
 			setMultiPanel();
+			log.info("Set actions to building panel...");
 			configureActionsAfter();
+			model.initNodes(model.getBuilding().Level.length);
 		}
 	}
 

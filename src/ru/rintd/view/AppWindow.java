@@ -133,6 +133,16 @@ public class AppWindow {
 	public void setAddSensorButtonActionListener(ActionListener actionListener){
 		this.actionButtons.sensorAddJButton.addActionListener(actionListener);
 	}
+	public void setAddLightButtonActionListener(ActionListener actionListener){
+		this.actionButtons.lightAddJButton.addActionListener(actionListener);
+	}
+	public void setAddPointerButtonActionListener(ActionListener actionListener){
+		this.actionButtons.pointersAddJButton.addActionListener(actionListener);
+	}
+	public void setAddServerButtonActionListener(ActionListener actionListener){
+		this.actionButtons.serverAddJButton.addActionListener(actionListener);
+	}
+	
 	
 	public void setToDrawPolygons() {
 		buildingPanel = new BuildingPanel();

@@ -16,11 +16,12 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import ru.rintd.controller.Controller;
-import ru.rintd.controller.ExtendBuildingElement;
 import ru.rintd.json2grid.BuildElement;
+import ru.rintd.json2grid.Node;
 
 import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.awt.ShapeWriter;
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
@@ -45,6 +46,10 @@ public class JtPanel extends JPanel {
 	 * буферы дверей
 	 */
 	private ArrayList<Geometry> buffers = new ArrayList<Geometry>();
+	/**
+	 * узлы (устройства)
+	 */
+	private ArrayList<Node> nodes = new ArrayList<Node>();
 	/**
 	 * перевод Geometry в Shape2D
 	 */
@@ -113,37 +118,32 @@ public class JtPanel extends JPanel {
 						try {
 
 							Geometry pol1 = buff.intersection(room0);
-							ExtendBuildingElement be = (ExtendBuildingElement) buildElement;
-							be.selected = 0;
+							BuildElement be = buildElement;
 							pol1.setUserData(be);
 							Geometry pol2 = buff.intersection(room1);
-							ExtendBuildingElement be2 = (ExtendBuildingElement) buildElement;
-							be2.selected = 1;
+							BuildElement be2 = buildElement;
 							pol2.setUserData(be2);
 							buffers.add(pol1);
 							buffers.add(pol2);
 						} catch (TopologyException e) {
-							System.out.println(">2POL>"
-									+ buildElement.Id);
+							System.out.println(">2POL>" + buildElement.Id);
 							try {
 								buff = polygons[i].buffer(0.0);
 
 								buff = buff.buffer(0.2);
 								Geometry pol1 = buff.intersection(room0);
 
-								ExtendBuildingElement be = (ExtendBuildingElement) buildElement;
-								be.selected = 0;
+								BuildElement be = buildElement;
 								pol1.setUserData(be);
-								
+
 								Geometry pol2 = buff.intersection(room1);
-								
-								ExtendBuildingElement be2 = (ExtendBuildingElement) buildElement;
-								be2.selected = 1;
+
+								BuildElement be2 = buildElement;
 								pol2.setUserData(be2);
-								
+
 								buffers.add(pol1);
 								buffers.add(pol2);
-							} catch (TopologyException e2){
+							} catch (TopologyException e2) {
 								System.out.println(e.getMessage());
 							}
 						}
@@ -156,8 +156,7 @@ public class JtPanel extends JPanel {
 						Geometry buff = polygons[i].buffer(10.0);
 
 						Geometry pol1 = buff.intersection(room0);
-						ExtendBuildingElement be = (ExtendBuildingElement) buildElement;
-						be.selected = 0;
+						BuildElement be = buildElement;
 						pol1.setUserData(be);
 						buffers.add(pol1);
 					} catch (TopologyException e) {
@@ -191,29 +190,21 @@ public class JtPanel extends JPanel {
 						.getUserData();
 
 				Shape shape = shapeWriter.toShape(polygon);
-				
+
 				g2d.setPaint(getColor(buildElement.Sign));
-				/*if (buildElement.Id
-						.substring(buildElement.Id.length() - 5,
-								buildElement.Id.length() - 1).equals("52fa")
-						| buildElement.Id
-								.substring(buildElement.Id.length() - 5,
-										buildElement.Id.length() - 1)
-								.equals("0076")
-						| buildElement.Id
-								.substring(buildElement.Id.length() - 5,
-										buildElement.Id.length() - 1)
-								.equals("c1c1")
-						| buildElement.Id
-								.substring(buildElement.Id.length() - 5,
-										buildElement.Id.length() - 1)
-								.equals("ec8d")
-						| buildElement.Id
-								.substring(buildElement.Id.length() - 5,
-										buildElement.Id.length() - 1)
-								.equals("920e")) {
-					g2d.setColor(Color.GREEN);
-				}*/
+				/*
+				 * if (buildElement.Id .substring(buildElement.Id.length() - 5,
+				 * buildElement.Id.length() - 1).equals("52fa") |
+				 * buildElement.Id .substring(buildElement.Id.length() - 5,
+				 * buildElement.Id.length() - 1) .equals("0076") |
+				 * buildElement.Id .substring(buildElement.Id.length() - 5,
+				 * buildElement.Id.length() - 1) .equals("c1c1") |
+				 * buildElement.Id .substring(buildElement.Id.length() - 5,
+				 * buildElement.Id.length() - 1) .equals("ec8d") |
+				 * buildElement.Id .substring(buildElement.Id.length() - 5,
+				 * buildElement.Id.length() - 1) .equals("920e")) {
+				 * g2d.setColor(Color.GREEN); }
+				 */
 				g2d.fill(shape);
 
 				for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
@@ -233,13 +224,13 @@ public class JtPanel extends JPanel {
 						// System.out.println("fill " + shape.getBounds2D());
 					} catch (TopologyException e) {
 						System.out.println(">POINT>" + buildElement.Id);
-						try{
-						polygon = (Polygon) polygon.buffer(0.0);
-						Point p = polygon.getCentroid();
-						p = polygon.getInteriorPoint();
-						centroids.add(p);
-						ids.add(buildElement.Id);
-						} catch (TopologyException e2){
+						try {
+							polygon = (Polygon) polygon.buffer(0.0);
+							Point p = polygon.getCentroid();
+							p = polygon.getInteriorPoint();
+							centroids.add(p);
+							ids.add(buildElement.Id);
+						} catch (TopologyException e2) {
 							System.out.println(e.getMessage());
 						}
 					}
@@ -306,6 +297,38 @@ public class JtPanel extends JPanel {
 					g2d.drawLine((int) (i * (scaler * zoom)), 0,
 							(int) (i * (scaler * zoom)), this.getHeight());
 				}
+			}
+			// узлы
+			// TODO: баг! рисует все, но инода пропускает несколько и отображает
+			// их только при добавлении еще одного!
+			for (Node node : nodes) {
+				BasicStroke pen = new BasicStroke(1f);
+				switch (node.type) {
+				case 1:
+					g2d.setColor(Color.ORANGE);
+					pen = new BasicStroke(3);
+					break;
+				case 2:
+					g2d.setColor(Color.GREEN);
+					pen = new BasicStroke(3);
+					break;
+				case 3:
+					g2d.setColor(Color.YELLOW);
+					pen = new BasicStroke(3);
+					break;
+				case 4:
+					g2d.setColor(Color.RED);
+					pen = new BasicStroke(3);
+					break;
+
+				default:
+					break;
+				}
+				g2d.setStroke(pen);
+				g2d.drawOval(
+						(int) (node.xy[0] * (scaler * zoom) - (scaler * zoom) / 2),
+						(int) (node.xy[1] * (scaler * zoom) - (scaler * zoom) / 2),
+						(int) (scaler * zoom), (int) (scaler * zoom));
 			}
 		}
 	}
@@ -395,7 +418,7 @@ public class JtPanel extends JPanel {
 
 	}
 
-	public ExtendBuildingElement getXYelement(int x, int y) {
+	public BuildElement getXYelement(int x, int y) {
 
 		setscale();
 		// System.out.println(scaler);
@@ -406,14 +429,14 @@ public class JtPanel extends JPanel {
 		for (int i = 0; i < buffers.size(); i++) {
 			Shape shape = shapeWriter.toShape(buffers.get(i));
 			if (shape.contains(point2d)) {
-				return (ExtendBuildingElement) buffers.get(i).getUserData();
+				return (BuildElement) buffers.get(i).getUserData();
 			}
 		}
 		for (Polygon polygon : polygons) {
 			Shape shape = shapeWriter.toShape(polygon);
 			if (shape.contains(point2d)) {
 
-				return (ExtendBuildingElement) polygon.getUserData();
+				return (BuildElement) polygon.getUserData();
 			}
 
 		}
@@ -422,12 +445,25 @@ public class JtPanel extends JPanel {
 
 	}
 
+	public Coordinate getPoint(Point2D p) {
+		Coordinate pModel = viewport.toModelCoordinate(p);
+		return pModel;
+	}
+
 	public double getZoom() {
 		return zoom;
 	}
 
 	public void setZoom(double zoom) {
 		this.zoom = zoom;
+	}
+
+	public ArrayList<Node> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(ArrayList<Node> nodes) {
+		this.nodes = nodes;
 	}
 
 }

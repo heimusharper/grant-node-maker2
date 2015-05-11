@@ -1,11 +1,14 @@
 package ru.rintd.view;
 
 import java.awt.Dimension;
+import java.awt.geom.Point2D;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import ru.rintd.controller.ExtendBuildingElement;
+import com.vividsolutions.jts.geom.Coordinate;
+
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 
@@ -16,12 +19,17 @@ public class MultiPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -4978069637198717431L;
 	private JTextArea area;
+	private JTextArea coords;
 	
 	public MultiPanel() {
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		area = new JTextArea();
 		area.setEditable(false);
-		area.setMaximumSize(new Dimension(10, 100));
+		//area.setMaximumSize(new Dimension(10, 100));
 		add(area);
+		coords = new JTextArea("Click");
+		coords.setEditable(false);
+		add(coords);
 		
 	}
 	
@@ -39,7 +47,7 @@ public class MultiPanel extends JPanel {
 		
 	}
 	
-	public void setBufferElement(ExtendBuildingElement buildElement){
+	public void setBufferElement(BuildElement buildElement){
 		String buildText = "";
 		buildText = "id: "+buildElement.Id+"\n";
 		buildText = buildText + "Name: "+buildElement.Name+"\n";
@@ -48,7 +56,6 @@ public class MultiPanel extends JPanel {
 		buildText = buildText + "Sign: "+buildElement.Sign+"\n";
 		buildText = buildText + "Type: "+buildElement.Type+"\n";
 		buildText = buildText + "Width: "+buildElement.Width+"\n";
-		buildText = buildText + "To room id"+buildElement.Output[buildElement.selected];
 		
 		area.setText(buildText);
 		
@@ -75,5 +82,14 @@ public class MultiPanel extends JPanel {
 		}
 		return newText;}
 		return null;
+	}
+	
+	public void setClick(Coordinate coords){
+		String text = "XY: ["+String.valueOf(coords.x).substring(0, 10)+"; "+String.valueOf(coords.y).substring(0, 10)+"]";
+		this.coords.setText(text);
+	}
+	public void setClick(Coordinate coords, Point2D point){
+		String text = "XY: ["+coords.x+"; "+coords.y+"] \n old ["+point.getX()+"; "+point.getY()+"]";
+		this.coords.setText(text);
 	}
 }
