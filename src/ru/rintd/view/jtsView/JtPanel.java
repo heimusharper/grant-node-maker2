@@ -445,8 +445,10 @@ public class JtPanel extends JPanel {
 		Point2D point2d = new Point2D.Double(x, y);
 		for (int i = 0; i < buffers.size(); i++) {
 			Shape shape = shapeWriter.toShape(buffers.get(i));
-			if (shape.contains(point2d)) {
+			try {if (shape.contains(point2d)) {
 				return (BuildElement) buffers.get(i).getUserData();
+			}} catch (UnsupportedOperationException u){
+				//TODO:это - костыль! узнать реальную возникновения исклюения
 			}
 		}
 		for (Polygon polygon : polygons) {
