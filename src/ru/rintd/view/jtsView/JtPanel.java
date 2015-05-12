@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
@@ -13,11 +14,14 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import ru.rintd.controller.Controller;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Node;
+import ru.rintd.model.res.Model;
+import ru.rintd.view.res.JButtonsStyles;
 
 import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.awt.ShapeWriter;
@@ -49,7 +53,7 @@ public class JtPanel extends JPanel {
 	/**
 	 * узлы (устройства)
 	 */
-	private ArrayList<Node> nodes = new ArrayList<Node>();
+	//private ArrayList<Node> nodes = new ArrayList<Node>();
 	/**
 	 * перевод Geometry в Shape2D
 	 */
@@ -73,14 +77,19 @@ public class JtPanel extends JPanel {
 	 * глобальный мастаб
 	 */
 	double zoom = 1;
+	
+	public int level = 0;
 
+	private Model model;
 	/**
 	 * 
 	 * @param p
 	 *            геометрия
 	 */
-	public JtPanel(Polygon[] p) {
-
+	public JtPanel(Polygon[] p, Model m, int level) {
+		
+		model = m;
+		this.level = level;
 		this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		shapeWriter = new ShapeWriter();
 		this.polygons = p;
@@ -301,7 +310,7 @@ public class JtPanel extends JPanel {
 			// узлы
 			// TODO: баг! рисует все, но инода пропускает несколько и отображает
 			// их только при добавлении еще одного!
-			for (Node node : nodes) {
+			for (Node node : model.getNodesLevel(level)) {
 				BasicStroke pen = new BasicStroke(1f);
 				switch (node.type) {
 				case 1:
@@ -325,10 +334,18 @@ public class JtPanel extends JPanel {
 					break;
 				}
 				g2d.setStroke(pen);
-				g2d.drawOval(
+				Image image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED).getImage();
+				switch (node.type) {
+				case 1:
+					image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED).getImage();
+					break;
+
+				default:
+					break;
+				}
+				g2d.drawImage(image,
 						(int) (node.xy[0] * (scaler * zoom) - (scaler * zoom) / 2),
-						(int) (node.xy[1] * (scaler * zoom) - (scaler * zoom) / 2),
-						(int) (scaler * zoom), (int) (scaler * zoom));
+						(int) (node.xy[1] * (scaler * zoom) - (scaler * zoom) / 2), null);
 			}
 		}
 	}
@@ -457,13 +474,12 @@ public class JtPanel extends JPanel {
 	public void setZoom(double zoom) {
 		this.zoom = zoom;
 	}
-
+/*
 	public ArrayList<Node> getNodes() {
 		return nodes;
 	}
-
 	public void setNodes(ArrayList<Node> nodes) {
 		this.nodes = nodes;
 	}
-
+*/
 }

@@ -260,7 +260,8 @@ public class Controller {
 									coord.x, coord.y);
 							log.info("Node: " + node + " push");
 							actionS.push(new AddNodeSomeAction(node, is));
-							jtPanel.setNodes(model.getNodesLevel(is));
+							jtPanel.repaint();
+							//jtPanel.setNodes(model.getNodesLevel(is));
 						}
 					}
 					super.mouseClicked(e);
@@ -371,7 +372,7 @@ public class Controller {
 			// mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()),
 			// mainWindow.getBuildingPanelDimension());
 			mainWindow.setToDrawPolygons(model.getToDrawPolygons(), model.getNodes(),
-					mainWindow.getBuildingPanelDimension());
+					mainWindow.getBuildingPanelDimension(), model);
 			// mainWindow.init();
 			log.info("Set multi panel...");
 			setMultiPanel();

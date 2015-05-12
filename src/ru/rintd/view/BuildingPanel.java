@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ru.rintd.json2grid.Node;
+import ru.rintd.model.res.Model;
 import ru.rintd.view.jtsView.JtPanel;
 
 import com.vividsolutions.jts.geom.Polygon;
@@ -53,7 +54,7 @@ public class BuildingPanel extends JPanel {
 	 * @param toDraw
 	 */
 
-	public void init(Polygon[][] toDraw, ArrayList<ArrayList<Node>> nodes) {
+	public void init(Polygon[][] toDraw, ArrayList<ArrayList<Node>> nodes, Model m) {
 		clear();
 		log.info("INIT building panel");
 		polygons = toDraw;
@@ -61,7 +62,7 @@ public class BuildingPanel extends JPanel {
 		jtPanel = new JtPanel[polygons.length];
 		int i = 0;
 		for (Polygon[] polygons : toDraw) {
-			jtPanel[i] = new JtPanel(polygons);
+			jtPanel[i] = new JtPanel(polygons, m, i);
 			i++;
 		}
 
@@ -86,7 +87,7 @@ public class BuildingPanel extends JPanel {
 					Dimension dim = getSize();
 					dim.setSize(dim.getWidth() * 2, dim.getHeight() * 2);
 					jtPanel[exi].setPreferredSize(dim);
-					jtPanel[exi].setNodes(nodes.get(exi));
+					//jtPanel[exi].setNodes(nodes.get(exi));
 					tabbedPane.addTab("Level " + (exi + 1), jScrollPane);
 					
 				}

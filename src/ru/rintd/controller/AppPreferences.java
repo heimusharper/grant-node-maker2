@@ -22,7 +22,7 @@ public class AppPreferences {
 	// высота окна
 	public int windowHeight = 800;
 	// выводить ли метровую сетку на изображении
-	public boolean planGrid = true;
+	public boolean planGrid = false;
 	// покзывать ли названия на комнатах и дверях
 	public boolean showLabelsPlan = true;
 
@@ -40,14 +40,14 @@ public class AppPreferences {
 	 */
 	public AppPreferences() {
 		preferences = Preferences.userNodeForPackage(AppPreferences.class);
-		windowWidth = preferences.getInt("windowWidth", 1000);
-		windowHeight = preferences.getInt("windowHeight", 800);
-		planGrid = preferences.getBoolean("planGrid", true);
-		planGrid = preferences.getBoolean("showLabelsPlan", true);
+		windowWidth = preferences.getInt("windowWidth", windowWidth);
+		windowHeight = preferences.getInt("windowHeight", windowHeight);
+		planGrid = preferences.getBoolean("planGrid", planGrid);
+		planGrid = preferences.getBoolean("showLabelsPlan", showLabelsPlan);
 
-		fontPlan = preferences.get("fontPlan", "Serif");
-		fontSize = preferences.getInt("fontSize", 18);
-		fontType = preferences.get("fontType", "PLAIN");
+		fontPlan = preferences.get("fontPlan", fontPlan);
+		fontSize = preferences.getInt("fontSize", fontSize);
+		fontType = preferences.get("fontType", fontType);
 	}
 
 	/**

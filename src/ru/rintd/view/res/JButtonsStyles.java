@@ -1,5 +1,6 @@
 package ru.rintd.view.res;
 
+import java.awt.Image;
 import java.awt.Insets;
 import java.net.URL;
 
@@ -44,6 +45,12 @@ public class JButtonsStyles {
 	public static final int SERVER_RED = 19;
 	public static final int SERVER_YELOW = 20;
 
+	// типы узлов
+	public static final int TYPE_ERROR = 200;
+	public static final int TYPE_WARNING = 201;
+	public static final int TYPE_GOOD = 202;
+	
+	
 	// настройки
 	public static final int PREFERENCES_ID = 21;
 
@@ -96,5 +103,11 @@ public class JButtonsStyles {
 
 		return button;
 	}
+	
+	public static ImageIcon getImg(int img){
+		return new ImageIcon( JButtonsStyles.class.getResource("icons/"
+				+ BUTTONS_FILE[img] + ".png"));
+	}
 
+	
 }

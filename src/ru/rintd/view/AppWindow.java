@@ -16,6 +16,7 @@ import com.vividsolutions.jts.geom.Polygon;
 
 import ru.rintd.controller.Run;
 import ru.rintd.json2grid.Node;
+import ru.rintd.model.res.Model;
 import ru.rintd.view.jtsView.JtPanel;
 
 public class AppWindow {
@@ -171,11 +172,11 @@ public class AppWindow {
 	 */
 	
 	public void setToDrawPolygons(Polygon[][] toDrawPolygons, ArrayList<ArrayList<Node>> nodes,
-			Dimension dimension) {
+			Dimension dimension, Model model) {
 		this.windowDimension = dimension;
 		// log.info("SET DIM:"+windowDimension);
 		if (toDrawPolygons != null) {
-			buildingPanel.init(toDrawPolygons, nodes);
+			buildingPanel.init(toDrawPolygons, nodes, model);
 			log.info("Init draw polygons...");
 		} else {
 			buildingPanel.init();
