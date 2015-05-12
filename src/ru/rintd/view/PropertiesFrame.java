@@ -143,7 +143,7 @@ public class PropertiesFrame extends JFrame {
 				appPreferences.showLabelsPlan = isShowLabelsPlan.isSelected();
 				appPreferences.fontPlan = (String) fontbox.getSelectedItem();
 				appPreferences.fontType = (String) fontType.getSelectedItem();
-
+				setVisible(false);
 			}
 		});
 	}

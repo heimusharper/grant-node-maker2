@@ -10,12 +10,17 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 import ru.rintd.controller.Controller;
 import ru.rintd.json2grid.BuildElement;
@@ -53,7 +58,7 @@ public class JtPanel extends JPanel {
 	/**
 	 * узлы (устройства)
 	 */
-	//private ArrayList<Node> nodes = new ArrayList<Node>();
+	// private ArrayList<Node> nodes = new ArrayList<Node>();
 	/**
 	 * перевод Geometry в Shape2D
 	 */
@@ -77,17 +82,23 @@ public class JtPanel extends JPanel {
 	 * глобальный мастаб
 	 */
 	double zoom = 1;
-	
+
 	public int level = 0;
 
 	private Model model;
+
+	public JScrollPane jScrollPane;
+
+	private int oldX = 0;
+	private int oldY = 0;
+
 	/**
 	 * 
 	 * @param p
 	 *            геометрия
 	 */
 	public JtPanel(Polygon[] p, Model m, int level) {
-		
+
 		model = m;
 		this.level = level;
 		this.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -106,6 +117,77 @@ public class JtPanel extends JPanel {
 		}
 		genDoorBuffers();
 
+		this.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+					oldX = e.getX();
+					oldY = e.getY();
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		this.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+					// System.out.println(e.getX()+";"+e.getY());
+					int scrollY = jScrollPane.getVerticalScrollBar().getValue();
+					int maxSxrollY = jScrollPane.getVerticalScrollBar()
+							.getMaximum();
+					System.out.println(maxSxrollY + " - " + scrollY + " ["
+							+ (e.getY() - oldY));
+					if (e.getY() - oldY >= 0)
+						jScrollPane.getVerticalScrollBar().setValue(
+								scrollY - (e.getY() - oldY));
+					else
+						jScrollPane.getVerticalScrollBar().setValue(
+								scrollY - (e.getY() - oldY));
+					oldY = e.getY();
+					int scrollX = jScrollPane.getHorizontalScrollBar()
+							.getValue();
+					int maxSxrollX = jScrollPane.getHorizontalScrollBar()
+							.getMaximum();
+					System.out.println(maxSxrollX + " - " + scrollX + " ["
+							+ (e.getX() - oldX));
+					if (e.getX() - oldX >= 0)
+						jScrollPane.getHorizontalScrollBar().setValue(
+								scrollX - (e.getX() - oldX));
+					else
+						jScrollPane.getHorizontalScrollBar().setValue(
+								scrollX - (e.getX() - oldX));
+					oldX = e.getX();
+				
+			}
+		});
 	}
 
 	public JtPanel() {
@@ -334,18 +416,22 @@ public class JtPanel extends JPanel {
 					break;
 				}
 				g2d.setStroke(pen);
-				Image image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED).getImage();
+				Image image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED)
+						.getImage();
 				switch (node.type) {
 				case 1:
-					image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED).getImage();
+					image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED)
+							.getImage();
 					break;
 
 				default:
 					break;
 				}
-				g2d.drawImage(image,
+				g2d.drawImage(
+						image,
 						(int) (node.xy[0] * (scaler * zoom) - (scaler * zoom) / 2),
-						(int) (node.xy[1] * (scaler * zoom) - (scaler * zoom) / 2), null);
+						(int) (node.xy[1] * (scaler * zoom) - (scaler * zoom) / 2),
+						null);
 			}
 		}
 	}
@@ -445,10 +531,12 @@ public class JtPanel extends JPanel {
 		Point2D point2d = new Point2D.Double(x, y);
 		for (int i = 0; i < buffers.size(); i++) {
 			Shape shape = shapeWriter.toShape(buffers.get(i));
-			try {if (shape.contains(point2d)) {
-				return (BuildElement) buffers.get(i).getUserData();
-			}} catch (UnsupportedOperationException u){
-				//TODO:это - костыль! узнать реальную возникновения исклюения
+			try {
+				if (shape.contains(point2d)) {
+					return (BuildElement) buffers.get(i).getUserData();
+				}
+			} catch (UnsupportedOperationException u) {
+				// TODO:это - костыль! узнать реальную возникновения исклюения
 			}
 		}
 		for (Polygon polygon : polygons) {
@@ -476,12 +564,8 @@ public class JtPanel extends JPanel {
 	public void setZoom(double zoom) {
 		this.zoom = zoom;
 	}
-/*
-	public ArrayList<Node> getNodes() {
-		return nodes;
-	}
-	public void setNodes(ArrayList<Node> nodes) {
-		this.nodes = nodes;
-	}
-*/
+	/*
+	 * public ArrayList<Node> getNodes() { return nodes; } public void
+	 * setNodes(ArrayList<Node> nodes) { this.nodes = nodes; }
+	 */
 }

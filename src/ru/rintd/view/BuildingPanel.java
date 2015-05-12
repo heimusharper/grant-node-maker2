@@ -2,6 +2,8 @@ package ru.rintd.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -78,6 +80,8 @@ public class BuildingPanel extends JPanel {
 							.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 					jScrollPane
 							.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+					jScrollPane.setWheelScrollingEnabled(true);
+					jtPanel[exi].jScrollPane = jScrollPane;
 					/*
 					 * log.info("DIM:"+this.getSize());
 					 * log.info("DIM PS:"+this.getPreferredSize());
