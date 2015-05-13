@@ -45,26 +45,31 @@ public class JButtonsStyles {
 	public static final int SERVER_RED = 19;
 	public static final int SERVER_YELOW = 20;
 
-	// типы узлов
-	public static final int TYPE_ERROR = 200;
-	public static final int TYPE_WARNING = 201;
-	public static final int TYPE_GOOD = 202;
-	
-	
 	// настройки
 	public static final int PREFERENCES_ID = 21;
+
+	public static final int CORBA_BUTTON = 22;
+	public static final int CORBA_ERROR = 23;
+	public static final int CORBA_IDLE = 22;
+	public static final int CORBA_OFFLINE = 24;
+	public static final int CORBA_RECEIVE = 25;
+	public static final int CORBA_TRANSMIT = 26;
 
 	private final static String[] BUTTONS_NAMES = { "Pointer", "Open", "Save",
 			"Undo", "Rendo", "Delete", "ZoomIn", "ZoomNull", "ZoomOut",
 			"Light", "Light ERROR", "Light NULL", "Pointer", "Pointer ERROR",
 			"Pointer NULL", "Sensor", "Sensor ERROR", "Sensor NULL", "Server",
-			"Server ERROR", "Server NULL", "Preferences" };
+			"Server ERROR", "Server NULL", "Preferences", "Connect to CORBA",
+			"CORBA ERROR", "CORBA idle", "CORBA offline", "CORBA receive",
+			"CORBA transmit"};
 
 	private final static String[] BUTTONS_DESCRIPTIONS = { "Pointer", "Open",
 			"Save", "Undo", "Rendo", "Delete", "ZoomIn", "ZoomNull", "ZoomOut",
 			"Light", "Light ERROR", "Light NULL", "Pointer", "Pointer ERROR",
 			"Pointer NULL", "Sensor", "Sensor ERROR", "Sensor NULL", "Server",
-			"Server ERROR", "Server NULL", "Preferences" };
+			"Server ERROR", "Server NULL", "Preferences", "Connect to CORBA",
+			"CORBA ERROR", "CORBA idle", "CORBA offline", "CORBA receive",
+			"CORBA transmit" };
 
 	private final static String[] BUTTONS_FILE = { "pointer", "document-open",
 			"document-save", "edit-redo-rtl", "edit-redo", "edit-delete",
@@ -72,7 +77,9 @@ public class JButtonsStyles {
 			"nodes/light_red", "nodes/light_yelow", "nodes/pointer_green",
 			"nodes/pointer_red", "nodes/pointer_yelow", "nodes/sensor_green",
 			"nodes/sensor_red", "nodes/sensor_yelow", "nodes/server_green",
-			"nodes/server_red", "nodes/server_yelow", "preferences-system" };
+			"nodes/server_red", "nodes/server_yelow", "preferences-system",
+			"network-idle", "network-error", "network-offline",
+			"network-receive", "network-transmit" };
 
 	// логгер
 	private static final Logger log = LogManager.getLogger(JButtonsStyles.class
@@ -103,11 +110,10 @@ public class JButtonsStyles {
 
 		return button;
 	}
-	
-	public static ImageIcon getImg(int img){
-		return new ImageIcon( JButtonsStyles.class.getResource("icons/"
+
+	public static ImageIcon getImg(int img) {
+		return new ImageIcon(JButtonsStyles.class.getResource("icons/"
 				+ BUTTONS_FILE[img] + ".png"));
 	}
 
-	
 }

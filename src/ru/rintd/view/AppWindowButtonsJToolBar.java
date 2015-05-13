@@ -56,6 +56,9 @@ public class AppWindowButtonsJToolBar extends JToolBar {
 	JButton preferencesButton = JButtonsStyles
 			.getButton(JButtonsStyles.PREFERENCES_ID);
 
+	// to CORBA cnnect
+	JButton corbaConnect = JButtonsStyles.getButton(JButtonsStyles.CORBA_BUTTON);
+	
 	// TODO: остальные кнопки
 
 	//
@@ -81,6 +84,7 @@ public class AppWindowButtonsJToolBar extends JToolBar {
 		zoomOutJButton.setEnabled(false);
 		this.add(preferencesButton);
 		preferencesButton.setEnabled(false);
+		this.add(corbaConnect);
 		this.addSeparator();
 		this.add(sensorAddJButton);
 		sensorAddJButton.setEnabled(false);
@@ -90,7 +94,6 @@ public class AppWindowButtonsJToolBar extends JToolBar {
 		pointersAddJButton.setEnabled(false);
 		this.add(serverAddJButton);
 		serverAddJButton.setEnabled(false);
-
 	}
 
 	public void fileIsOpened() {

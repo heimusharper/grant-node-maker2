@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.text.NumberFormatter;
 
 import ru.rintd.controller.AppPreferences;
+import ru.rintd.controller.Controller;
 
 public class PropertiesFrame extends JFrame {
 
@@ -49,7 +50,7 @@ public class PropertiesFrame extends JFrame {
 
 	private JPanel jPanel = new JPanel();
 
-	public PropertiesFrame(AppPreferences appPreferences) {
+	public PropertiesFrame(AppPreferences appPreferences, Controller controller) {
 
 		format.setValueClass(Integer.class);
 		// format.setMinimum(2);
@@ -58,7 +59,7 @@ public class PropertiesFrame extends JFrame {
 
 		this.setContentPane(jPanel);
 		this.setSize(new Dimension(300, 300));
-		this.setVisible(false);
+		this.setVisible(true);
 
 		windHeight.setText("" + appPreferences.windowHeight);
 		windWidth.setText("" + appPreferences.windowWidth);
@@ -70,55 +71,10 @@ public class PropertiesFrame extends JFrame {
 
 		setElements();
 
-		this.addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setVisible(false);
-
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
 		cancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				setVisible(false);
+				dispose();
 				// super.mouseClicked(e);
 			}
 		});
@@ -143,7 +99,8 @@ public class PropertiesFrame extends JFrame {
 				appPreferences.showLabelsPlan = isShowLabelsPlan.isSelected();
 				appPreferences.fontPlan = (String) fontbox.getSelectedItem();
 				appPreferences.fontType = (String) fontType.getSelectedItem();
-				setVisible(false);
+				controller.repaintWindow();
+				dispose();
 			}
 		});
 	}

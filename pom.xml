@@ -21,11 +21,16 @@
 			<artifactId>json2building</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.vividsolutions</groupId>
 			<artifactId>jts</artifactId>
 			<version>1.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.rintd.rfa</groupId>
+			<artifactId>ControlCenterLib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

@@ -154,6 +154,9 @@ public class AppWindow {
 	public void setSaveButtonActionListener(ActionListener actionListener){
 		this.actionButtons.saveJButton.addActionListener(actionListener);
 	}
+	public void setCorbaButtonActionListener(ActionListener actionListener){
+		this.actionButtons.corbaConnect.addActionListener(actionListener);
+	}
 	
 	
 	public void setToDrawPolygons() {
@@ -216,6 +219,8 @@ public class AppWindow {
 	public void setWindowClosing(WindowListener listener){
 		mainFrame.addWindowListener(listener);
 	}
-	
+	public void repaint(){
+		mainFrame.repaint();
+	}
 }
 

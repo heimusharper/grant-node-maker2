@@ -427,10 +427,11 @@ public class JtPanel extends JPanel {
 				default:
 					break;
 				}
+				int dxy = image.getHeight(null);
 				g2d.drawImage(
 						image,
-						(int) (node.xy[0] * (scaler * zoom) - (scaler * zoom) / 2),
-						(int) (node.xy[1] * (scaler * zoom) - (scaler * zoom) / 2),
+						(int) (node.xy[0] * (scaler * zoom) - dxy / 2),
+						(int) (node.xy[1] * (scaler * zoom) - dxy / 2),
 						null);
 			}
 		}

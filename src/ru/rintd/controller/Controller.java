@@ -8,16 +8,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.vividsolutions.jts.geom.Coordinate;
-
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Json2Grid;
@@ -26,6 +22,7 @@ import ru.rintd.model.res.AddNodeSomeAction;
 import ru.rintd.model.res.Model;
 import ru.rintd.model.res.SomeActionS;
 import ru.rintd.view.AppWindow;
+import ru.rintd.view.CorbaConnectorFrame;
 import ru.rintd.view.MultiPanel;
 import ru.rintd.view.PropertiesFrame;
 import ru.rintd.view.jtsView.JtPanel;
@@ -94,8 +91,6 @@ public class Controller {
 				actionS = new SomeActionS(model);
 				// настройка событий
 				log.info("Setting actions...");
-				props = new PropertiesFrame(appPreferences);
-				props.setVisible(false);
 				configureActions();
 
 			}
@@ -109,6 +104,7 @@ public class Controller {
 	 */
 	private void configureActions() {
 
+		Controller t = this;
 		// кнопка открытия
 		mainWindow.setOpenFileButtonActionListener(new ActionListener() {
 
@@ -150,11 +146,10 @@ public class Controller {
 		});
 		// кнопка открытия настроек
 		mainWindow.setPropertiesButtonActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				props.setVisible(true);
+				props = new PropertiesFrame(appPreferences, t);
 
 			}
 		});
@@ -217,8 +212,36 @@ public class Controller {
 
 			}
 		});
+		mainWindow.setCorbaButtonActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CorbaConnectorFrame connectorFrame = new CorbaConnectorFrame();
+				connectorFrame.setConnectAction(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						connectToCorba(connectorFrame.getAddresField()
+								.getText(), Integer.parseInt(connectorFrame
+								.getPortField().getText()));
+						connectorFrame.dispose();
+					}
+				});
+				connectorFrame.setSize(new Dimension(200, 100));
+				connectorFrame.setVisible(true);
+
+			}
+		});
 	}
 
+	private void connectToCorba(String addres, int port) {
+		// TODO: connecting to cloud!
+	}
+
+	public void repaintWindow(){
+		mainWindow.repaint();
+	}
+	
 	/**
 	 * настройки после инициализации здания
 	 */
@@ -261,7 +284,7 @@ public class Controller {
 							log.info("Node: " + node + " push");
 							actionS.push(new AddNodeSomeAction(node, is));
 							jtPanel.repaint();
-							//jtPanel.setNodes(model.getNodesLevel(is));
+							// jtPanel.setNodes(model.getNodesLevel(is));
 						}
 					}
 					super.mouseClicked(e);
@@ -371,33 +394,35 @@ public class Controller {
 			// log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
 			// mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()),
 			// mainWindow.getBuildingPanelDimension());
-			mainWindow.setToDrawPolygons(model.getToDrawPolygons(), model.getNodes(),
-					mainWindow.getBuildingPanelDimension(), model);
+			mainWindow.setToDrawPolygons(model.getToDrawPolygons(),
+					model.getNodes(), mainWindow.getBuildingPanelDimension(),
+					model);
 			// mainWindow.init();
 			log.info("Set multi panel...");
 			setMultiPanel();
 			log.info("Set actions to building panel...");
 			configureActionsAfter();
-			//model.initNodes(model.getBuilding().Level.length);
+			// model.initNodes(model.getBuilding().Level.length);
 		}
 	}
 
 	/**
 	 * диалог сохранения файла
 	 */
-	private void showFileSaveDialog(){
+	private void showFileSaveDialog() {
 		log.info("Save file...");
 		JFileChooser chooser = new JFileChooser();
-		FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JSON file", "json");
+		FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter(
+				"JSON file", "json");
 		chooser.setFileFilter(fileNameExtensionFilter);
 		int value = chooser.showSaveDialog(null);
-		if (value == JFileChooser.APPROVE_OPTION){
+		if (value == JFileChooser.APPROVE_OPTION) {
 			String filePath = chooser.getSelectedFile().getAbsolutePath();
-			log.info("Save file to "+filePath + " ...");
+			log.info("Save file to " + filePath + " ...");
 			Building b = model.getBuildingToSave();
 			Json2Grid.saveVMjson(filePath, b);
 			log.info("Save done.");
 		}
 	}
-	
+
 }
