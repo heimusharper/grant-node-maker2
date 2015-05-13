@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import com.vividsolutions.jts.geom.Polygon;
 
 import ru.rintd.json2grid.Building;
-import ru.rintd.json2grid.GridTransformation;
 import ru.rintd.json2grid.Json2Grid;
 import ru.rintd.json2grid.Node;
 
@@ -59,7 +58,7 @@ public class Model {
 
 	public Polygon[][] getToDrawPolygons() {
 
-		return GridTransformation.getJts(building);
+		return Json2Grid.getJts(building);
 	}
 
 	public Building getBuilding() {
