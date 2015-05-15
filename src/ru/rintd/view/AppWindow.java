@@ -157,6 +157,14 @@ public class AppWindow {
 	public void setCorbaButtonActionListener(ActionListener actionListener){
 		this.actionButtons.corbaConnect.addActionListener(actionListener);
 	}
+	public void setUndoButtonActionListener(ActionListener actionListener){
+		this.actionButtons.undoJButton.addActionListener(actionListener);
+	}
+	public void setRendoButtonActionListener(ActionListener actionListener){
+		this.actionButtons.rendoJButton.addActionListener(actionListener);
+	}
+	
+	
 	
 	
 	public void setToDrawPolygons() {

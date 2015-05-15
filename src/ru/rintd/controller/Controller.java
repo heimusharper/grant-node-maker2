@@ -232,16 +232,34 @@ public class Controller {
 
 			}
 		});
+		
+		mainWindow.setUndoButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionS.back();
+				repaintWindow();
+			}
+		});
+		
+		mainWindow.setRendoButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionS.forvard();
+				repaintWindow();
+			}
+		});
 	}
 
 	private void connectToCorba(String addres, int port) {
 		// TODO: connecting to cloud!
 	}
 
-	public void repaintWindow(){
+	public void repaintWindow() {
 		mainWindow.repaint();
 	}
-	
+
 	/**
 	 * настройки после инициализации здания
 	 */
@@ -269,9 +287,14 @@ public class Controller {
 						log.info("Inside the building!");
 						// попали в элемент - вывод инфы о элементе
 						multiPanel.setBuildElement(buildElement);
-						if (instrument == ADD_SENSOR || instrument == ADD_LIGHT
-								|| instrument == ADD_POINTER
-								|| instrument == ADD_SERVER) {
+						if ((instrument == ADD_SENSOR && !JtPanel
+								.isDoor(buildElement.Sign))
+								|| (instrument == ADD_LIGHT && JtPanel
+										.isDoor(buildElement.Sign))
+								|| (instrument == ADD_POINTER && !JtPanel
+										.isDoor(buildElement.Sign))
+								|| (instrument == ADD_SERVER && !JtPanel
+										.isDoor(buildElement.Sign))) {
 							log.info("Add new Node...");
 							// добавление сенсора
 							Coordinate coord = jtPanel.getPoint(e.getPoint());
@@ -283,6 +306,7 @@ public class Controller {
 									coord.x, coord.y);
 							log.info("Node: " + node + " push");
 							actionS.push(new AddNodeSomeAction(node, is));
+							multiPanel.setNodeTree(model.getNodes());
 							jtPanel.repaint();
 							// jtPanel.setNodes(model.getNodesLevel(is));
 						}
@@ -293,6 +317,8 @@ public class Controller {
 			});
 			i++;
 		}
+		
+		multiPanel.setNodeTree(model.getNodes());
 	}
 
 	/**

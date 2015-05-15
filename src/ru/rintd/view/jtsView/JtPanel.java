@@ -117,76 +117,41 @@ public class JtPanel extends JPanel {
 		}
 		genDoorBuffers();
 
-		this.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
+		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-					oldX = e.getX();
-					oldY = e.getY();
+
+				oldX = e.getX();
+				oldY = e.getY();
+				super.mousePressed(e);
 			}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		this.addMouseMotionListener(new MouseMotionListener() {
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-					// System.out.println(e.getX()+";"+e.getY());
-					int scrollY = jScrollPane.getVerticalScrollBar().getValue();
-					int maxSxrollY = jScrollPane.getVerticalScrollBar()
-							.getMaximum();
-					System.out.println(maxSxrollY + " - " + scrollY + " ["
-							+ (e.getY() - oldY));
-					if (e.getY() - oldY >= 0)
-						jScrollPane.getVerticalScrollBar().setValue(
-								scrollY - (e.getY() - oldY));
-					else
-						jScrollPane.getVerticalScrollBar().setValue(
-								scrollY - (e.getY() - oldY));
-					oldY = e.getY();
-					int scrollX = jScrollPane.getHorizontalScrollBar()
-							.getValue();
-					int maxSxrollX = jScrollPane.getHorizontalScrollBar()
-							.getMaximum();
-					System.out.println(maxSxrollX + " - " + scrollX + " ["
-							+ (e.getX() - oldX));
-					if (e.getX() - oldX >= 0)
-						jScrollPane.getHorizontalScrollBar().setValue(
-								scrollX - (e.getX() - oldX));
-					else
-						jScrollPane.getHorizontalScrollBar().setValue(
-								scrollX - (e.getX() - oldX));
-					oldX = e.getX();
-				
-			}
+			public void mouseDragged(MouseEvent e) {// System.out.println(e.getX()+";"+e.getY());
+				int scrollY = jScrollPane.getVerticalScrollBar().getValue();
+				int maxSxrollY = jScrollPane.getVerticalScrollBar()
+						.getMaximum();
+				System.out.println(maxSxrollY + " - " + scrollY + " ["
+						+ (e.getY() - oldY));
+				if (e.getY() - oldY >= 0)
+					jScrollPane.getVerticalScrollBar().setValue(
+							scrollY - (e.getY() - oldY));
+				else
+					jScrollPane.getVerticalScrollBar().setValue(
+							scrollY - (e.getY() - oldY));
+				oldY = e.getY();
+				int scrollX = jScrollPane.getHorizontalScrollBar().getValue();
+				int maxSxrollX = jScrollPane.getHorizontalScrollBar()
+						.getMaximum();
+				System.out.println(maxSxrollX + " - " + scrollX + " ["
+						+ (e.getX() - oldX));
+				if (e.getX() - oldX >= 0)
+					jScrollPane.getHorizontalScrollBar().setValue(
+							scrollX - (e.getX() - oldX));
+				else
+					jScrollPane.getHorizontalScrollBar().setValue(
+							scrollX - (e.getX() - oldX));
+				oldX = e.getX();
+			};
 		});
 	}
 
@@ -209,14 +174,18 @@ public class JtPanel extends JPanel {
 						try {
 
 							Geometry pol1 = buff.intersection(room0);
-							BuildElement be = buildElement;
+							BuildElement be = model.getElementFromId(
+									buildElement.Output[0]).clone();
+							be.Sign = buildElement.Sign;
 							pol1.setUserData(be);
 							Geometry pol2 = buff.intersection(room1);
-							BuildElement be2 = buildElement;
+							BuildElement be2 = model.getElementFromId(
+									buildElement.Output[1]).clone();
+							be2.Sign = buildElement.Sign;
 							pol2.setUserData(be2);
 							buffers.add(pol1);
 							buffers.add(pol2);
-						} catch (TopologyException e) {
+						} catch (TopologyException | CloneNotSupportedException e) {
 							System.out.println(">2POL>" + buildElement.Id);
 							try {
 								buff = polygons[i].buffer(0.0);
@@ -224,17 +193,22 @@ public class JtPanel extends JPanel {
 								buff = buff.buffer(0.2);
 								Geometry pol1 = buff.intersection(room0);
 
-								BuildElement be = buildElement;
+								BuildElement be = model.getElementFromId(
+										buildElement.Output[0]).clone();
+								be.Sign = buildElement.Sign;
 								pol1.setUserData(be);
 
 								Geometry pol2 = buff.intersection(room1);
 
-								BuildElement be2 = buildElement;
+								BuildElement be2 = model.getElementFromId(
+										buildElement.Output[1]).clone();
+								be2.Sign = buildElement.Sign;
 								pol2.setUserData(be2);
 
 								buffers.add(pol1);
 								buffers.add(pol2);
-							} catch (TopologyException e2) {
+							} catch (TopologyException
+									| CloneNotSupportedException e2) {
 								System.out.println(e.getMessage());
 							}
 						}
@@ -247,10 +221,12 @@ public class JtPanel extends JPanel {
 						Geometry buff = polygons[i].buffer(10.0);
 
 						Geometry pol1 = buff.intersection(room0);
-						BuildElement be = buildElement;
+						BuildElement be = model.getElementFromId(
+								buildElement.Output[0]).clone();
+						be.Sign = buildElement.Sign;
 						pol1.setUserData(be);
 						buffers.add(pol1);
-					} catch (TopologyException e) {
+					} catch (TopologyException | CloneNotSupportedException e) {
 						System.out.println(">1POL>" + buildElement.Id);
 					}
 
@@ -390,8 +366,6 @@ public class JtPanel extends JPanel {
 				}
 			}
 			// узлы
-			// TODO: баг! рисует все, но инода пропускает несколько и отображает
-			// их только при добавлении еще одного!
 			for (Node node : model.getNodesLevel(level)) {
 				BasicStroke pen = new BasicStroke(1f);
 				switch (node.type) {
@@ -415,24 +389,36 @@ public class JtPanel extends JPanel {
 				default:
 					break;
 				}
-				g2d.setStroke(pen);
-				Image image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED)
-						.getImage();
-				switch (node.type) {
-				case 1:
-					image = JButtonsStyles.getImg(JButtonsStyles.SENSOR_RED)
-							.getImage();
-					break;
-
-				default:
-					break;
+				if (node.type == 1 || node.type == 2 || node.type == 3
+						|| node.type == 4) {
+					Image image = JButtonsStyles.getImg(
+							JButtonsStyles.SENSOR_RED).getImage();
+					switch (node.type) {
+					case 1:
+						image = JButtonsStyles
+								.getImg(JButtonsStyles.SENSOR_RED).getImage();
+						break;
+					case 2:
+						image = JButtonsStyles.getImg(JButtonsStyles.LIGHT_RED)
+								.getImage();
+						break;
+					case 3:
+						image = JButtonsStyles.getImg(
+								JButtonsStyles.POINTER_RED).getImage();
+						break;
+					case 4:
+						image = JButtonsStyles
+								.getImg(JButtonsStyles.SERVER_RED).getImage();
+						break;
+					default:
+						break;
+					}
+					int dxy = image.getHeight(null);
+					g2d.drawImage(image,
+							(int) (node.xy[0] * (scaler * zoom) - dxy / 2),
+							(int) (node.xy[1] * (scaler * zoom) - dxy / 2),
+							null);
 				}
-				int dxy = image.getHeight(null);
-				g2d.drawImage(
-						image,
-						(int) (node.xy[0] * (scaler * zoom) - dxy / 2),
-						(int) (node.xy[1] * (scaler * zoom) - dxy / 2),
-						null);
 			}
 		}
 	}
@@ -471,7 +457,7 @@ public class JtPanel extends JPanel {
 		return new Color(255, 0, 255);
 	}
 
-	private boolean isDoor(String sign) {
+	public static boolean isDoor(String sign) {
 		switch (sign) {
 		case "Room":
 			return false;

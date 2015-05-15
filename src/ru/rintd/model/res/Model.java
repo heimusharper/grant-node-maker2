@@ -2,20 +2,24 @@ package ru.rintd.model.res;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.vividsolutions.jts.geom.Polygon;
 
+import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Json2Grid;
 import ru.rintd.json2grid.Node;
+import ru.rintd.json2grid.Building.InternLevel;
 
 public class Model {
 
 	private Building building = new Building();
 	private ArrayList<ArrayList<Node>> nodes = new ArrayList<ArrayList<Node>>();
+	private HashMap<String, BuildElement> elementsMap = new HashMap<String, BuildElement>();
 	// private ToDrawPolygons[] toDrawPolygons = null;
 	// логгер
 	private static final Logger log = LogManager.getLogger(Model.class
@@ -116,6 +120,21 @@ public class Model {
 		return nodes;
 	}
 	
+	public BuildElement getElementFromId(String id){
+		if (elementsMap.size() == 0){
+			if (building.Level != null){
+				for (InternLevel level : building.Level) {
+					for (BuildElement el : level.BuildElement){
+						elementsMap.put(el.Id, el);
+					}
+				}
+			}
+		}
+		if (elementsMap.size() != 0){
+			return elementsMap.get(id);
+		}
+		return null;
+	}
 	
 
 }
