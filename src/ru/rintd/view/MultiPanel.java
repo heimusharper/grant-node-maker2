@@ -12,14 +12,24 @@ import com.vividsolutions.jts.geom.Coordinate;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Node;
-
+/**
+ * информационная панель
+ * @author sheihar
+ *
+ */
 public class MultiPanel extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4978069637198717431L;
+	/**
+	 * текст
+	 */
 	private JTextArea area;
+	/**
+	 * координаты
+	 */
 	private JTextArea coords;
 	private ElementsList elementsList;
 

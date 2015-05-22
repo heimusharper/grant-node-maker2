@@ -1,7 +1,6 @@
 package ru.rintd.controller;
 
 import java.awt.Dimension;
-import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 /**

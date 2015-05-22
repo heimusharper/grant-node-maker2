@@ -14,11 +14,26 @@ import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Json2Grid;
 import ru.rintd.json2grid.Node;
 import ru.rintd.json2grid.Building.InternLevel;
-
+/**
+ * модель данных
+ * @author sheihar
+ *
+ */
 public class Model {
 
+	/**
+	 * план здания
+	 */
 	private Building building = new Building();
+	/**
+	 * набор узлов
+	 * первый ArrayList - этаж
+	 * второй - набор злов этажа
+	 */
 	private ArrayList<ArrayList<Node>> nodes = new ArrayList<ArrayList<Node>>();
+	/**
+	 * карта элементов для ускорения и простоты
+	 */
 	private HashMap<String, BuildElement> elementsMap = new HashMap<String, BuildElement>();
 	// private ToDrawPolygons[] toDrawPolygons = null;
 	// логгер
@@ -73,6 +88,11 @@ public class Model {
 		return nodes.get(level);
 	}
 
+	/**
+	 * добавить узел в модель
+	 * @param node узел
+	 * @param level этаж здания
+	 */
 	public void setNode(Node node, int level) {
 
 		try {
@@ -87,6 +107,11 @@ public class Model {
 	/*
 	 * public void initNodes(int levels) { log.info("Nodes init..."); for (int i
 	 * = 0; i < levels; i++) { nodes.add(new ArrayList<Node>()); } }
+	 */
+	/**
+	 * удалить узел из модели
+	 * @param node узел
+	 * @param level этаж
 	 */
 	public void removeNode(Node node, int level) {
 		int i = 0;
@@ -109,6 +134,10 @@ public class Model {
 				+ " into level " + level + "]");
 	}
 
+	/**
+	 * отдает план здания с узлами, готовый для сохранения
+	 * @return план здания для json
+	 */
 	public Building getBuildingToSave() {
 		for (int i = 0; i < building.Level.length; i++) {
 			building.Level[i].nodes = nodes.get(i).toArray(new Node[nodes.get(i).size()]);
@@ -120,6 +149,12 @@ public class Model {
 		return nodes;
 	}
 	
+	
+	/**
+	 * получить элемент по его id
+	 * @param id id элемента
+	 * @return
+	 */
 	public BuildElement getElementFromId(String id){
 		if (elementsMap.size() == 0){
 			if (building.Level != null){

@@ -1,7 +1,11 @@
 package ru.rintd.model.res;
 
 import ru.rintd.json2grid.Node;
-
+/**
+ * действие - добавление узла
+ * @author sheihar
+ *
+ */
 public class AddNodeSomeAction extends SomeAction implements SomeActionI{
 	private Node node;
 	private int level;

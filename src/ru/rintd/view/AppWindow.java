@@ -5,20 +5,19 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.vividsolutions.jts.geom.Polygon;
-
 import ru.rintd.controller.Run;
-import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.Model;
 import ru.rintd.view.jtsView.JtPanel;
 
+/**
+ * окно приложения
+ * 
+ * @author sheihar
+ *
+ */
 public class AppWindow {
 
 	// оено приложения
@@ -28,11 +27,14 @@ public class AppWindow {
 	// логгер
 	private static final Logger log = LogManager.getLogger(AppWindow.class
 			.getName());
-
+	/**
+	 * размеры окна
+	 */
 	private Dimension windowDimension;
 
 	// панели
 	private AppWindowButtonsJToolBar actionButtons;
+	// панель здания
 	private BuildingPanel buildingPanel;
 
 	public AppWindow(Dimension dimension) {
@@ -54,7 +56,7 @@ public class AppWindow {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setSize(windowDimension);
 		this.setTitle(null);
-		
+
 	}
 
 	/**
@@ -97,7 +99,6 @@ public class AppWindow {
 		mainFrame.add(actionButtons, BorderLayout.NORTH);
 	}
 
-	
 	/**
 	 * задать, что делать при нажатии кнопки "Open" (открыть)
 	 * 
@@ -117,56 +118,66 @@ public class AppWindow {
 	public void setSaveFileButtonActionListener(ActionListener action) {
 		this.actionButtons.saveJButton.addActionListener(action);
 	}
-	
+
 	public void setZoomInButtonActionLinsteber(ActionListener action) {
 		this.actionButtons.zoomInJButton.addActionListener(action);
 	}
-	
+
 	public void setZoomOutButtonActionLinsteber(ActionListener action) {
 		this.actionButtons.zoomOutJButton.addActionListener(action);
 	}
-	
+
 	public void setZoomNULLButtonActionLinsteber(ActionListener action) {
 		this.actionButtons.zoom0JButton.addActionListener(action);
 	}
-	public void setPropertiesButtonActionListener(ActionListener actionListener){
+
+	public void setPropertiesButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.preferencesButton.addActionListener(actionListener);
 	}
-	
-	public void setAddSensorButtonActionListener(ActionListener actionListener){
+
+	public void setAddSensorButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.sensorAddJButton.addActionListener(actionListener);
 	}
-	public void setAddLightButtonActionListener(ActionListener actionListener){
+
+	public void setAddLightButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.lightAddJButton.addActionListener(actionListener);
 	}
-	public void setAddPointerButtonActionListener(ActionListener actionListener){
+
+	public void setAddPointerButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.pointersAddJButton.addActionListener(actionListener);
 	}
-	public void setAddServerButtonActionListener(ActionListener actionListener){
+
+	public void setAddServerButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.serverAddJButton.addActionListener(actionListener);
 	}
-	public void setPointButtonActionListener(ActionListener actionListener){
+
+	public void setPointButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.pointerJButton.addActionListener(actionListener);
 	}
-	public void setDeleteButtonActionListener(ActionListener actionListener){
+
+	public void setDeleteButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.deleteJButton.addActionListener(actionListener);
 	}
-	public void setSaveButtonActionListener(ActionListener actionListener){
+
+	public void setSaveButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.saveJButton.addActionListener(actionListener);
 	}
-	public void setCorbaButtonActionListener(ActionListener actionListener){
+
+	public void setCorbaButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.corbaConnect.addActionListener(actionListener);
 	}
-	public void setUndoButtonActionListener(ActionListener actionListener){
+
+	public void setUndoButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.undoJButton.addActionListener(actionListener);
 	}
-	public void setRendoButtonActionListener(ActionListener actionListener){
+
+	public void setRendoButtonActionListener(ActionListener actionListener) {
 		this.actionButtons.rendoJButton.addActionListener(actionListener);
 	}
-	
-	
-	
-	
+
+	/**
+	 * инициализация плана здания
+	 */
 	public void setToDrawPolygons() {
 		buildingPanel = new BuildingPanel();
 		buildingPanel.setPreferredSize(windowDimension);
@@ -182,12 +193,18 @@ public class AppWindow {
 	 * buildingPanel.init(toDrawPolygons); else buildingPanel.init(); }
 	 */
 	
-	public void setToDrawPolygons(Polygon[][] toDrawPolygons, ArrayList<ArrayList<Node>> nodes,
-			Dimension dimension, Model model) {
+	/**
+	 * задать начальные данные для рисовки
+	 * 
+	 * @param dimension размеры
+	 * @param model модель данных
+	 */
+	public void setToDrawPolygons(Dimension dimension, Model model) {
 		this.windowDimension = dimension;
 		// log.info("SET DIM:"+windowDimension);
-		if (toDrawPolygons != null) {
-			buildingPanel.init(toDrawPolygons, nodes, model);
+		if (model.getToDrawPolygons() != null) {
+			buildingPanel.init(model.getToDrawPolygons(), model.getNodes(),
+					model);
 			log.info("Init draw polygons...");
 		} else {
 			buildingPanel.init();
@@ -204,31 +221,33 @@ public class AppWindow {
 	public void init() {
 		buildingPanel.init();
 	}
-	
+
 	public void zoomIn() {
 		buildingPanel.zoomIn();
 	}
+
 	public void zoomOut() {
 		buildingPanel.zoomOut();
 	}
-	public void zoomDef(){
+
+	public void zoomDef() {
 		buildingPanel.zoomDef();
 	}
-	
-	public JtPanel[] getJtPanel(){
+
+	public JtPanel[] getJtPanel() {
 		return buildingPanel.getJtPanel();
 	}
-	
-	public void add(Component com, Object constrainst ){
-		
+
+	public void add(Component com, Object constrainst) {
+
 		mainFrame.add(com, constrainst);
 	}
 
-	public void setWindowClosing(WindowListener listener){
+	public void setWindowClosing(WindowListener listener) {
 		mainFrame.addWindowListener(listener);
 	}
-	public void repaint(){
+
+	public void repaint() {
 		mainFrame.repaint();
 	}
 }
-

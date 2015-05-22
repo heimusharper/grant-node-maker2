@@ -8,7 +8,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import ru.rintd.json2grid.Node;
-
+/**
+ * список узлов сети с описанием 
+ * TODO: не обновляется!
+ * 
+ * @author sheihar
+ *
+ */
 public class ElementsList extends JPanel {
 
 	/**

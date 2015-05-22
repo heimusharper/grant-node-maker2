@@ -1,5 +1,9 @@
 package ru.rintd.model.res;
-
+/**
+ * 
+ * @author sheihar
+ *
+ */
 public class SomeAction implements SomeActionI{
 
 	@Override

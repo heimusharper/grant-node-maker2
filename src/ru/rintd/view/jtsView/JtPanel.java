@@ -1,5 +1,6 @@
 package ru.rintd.view.jtsView;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -11,23 +12,16 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-
 import ru.rintd.controller.Controller;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.Model;
 import ru.rintd.view.res.JButtonsStyles;
-
 import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.awt.ShapeWriter;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -35,6 +29,14 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.TopologyException;
+
+/**
+ * 
+ * класс панели с отображением этажа
+ * 
+ * @author sheihar
+ *
+ */
 
 public class JtPanel extends JPanel {
 
@@ -91,6 +93,11 @@ public class JtPanel extends JPanel {
 
 	private int oldX = 0;
 	private int oldY = 0;
+	
+	/**
+	 * прозрачность узлов
+	 */
+	private float alpha =  0.7f;
 
 	/**
 	 * 
@@ -367,28 +374,6 @@ public class JtPanel extends JPanel {
 			}
 			// узлы
 			for (Node node : model.getNodesLevel(level)) {
-				BasicStroke pen = new BasicStroke(1f);
-				switch (node.type) {
-				case 1:
-					g2d.setColor(Color.ORANGE);
-					pen = new BasicStroke(3);
-					break;
-				case 2:
-					g2d.setColor(Color.GREEN);
-					pen = new BasicStroke(3);
-					break;
-				case 3:
-					g2d.setColor(Color.YELLOW);
-					pen = new BasicStroke(3);
-					break;
-				case 4:
-					g2d.setColor(Color.RED);
-					pen = new BasicStroke(3);
-					break;
-
-				default:
-					break;
-				}
 				if (node.type == 1 || node.type == 2 || node.type == 3
 						|| node.type == 4) {
 					Image image = JButtonsStyles.getImg(
@@ -414,10 +399,18 @@ public class JtPanel extends JPanel {
 						break;
 					}
 					int dxy = image.getHeight(null);
-					g2d.drawImage(image,
-							(int) (node.xy[0] * (scaler * zoom) - dxy / 2),
-							(int) (node.xy[1] * (scaler * zoom) - dxy / 2),
-							null);
+					Coordinate cs = new Coordinate(node.xy[0], node.xy[1]);
+					Point p = new Point(cs, null, 0);
+					//Point p = new Point(, null);
+					Shape sh = shapeWriter.toShape(p);
+					
+//					g2d.drawImage(image,
+//							(int) (node.xy[0] * (scaler * zoom) - dxy / 2),
+//							(int) (node.xy[1] * (scaler * zoom) - dxy / 2),
+//							null);
+					AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+					g2d.setComposite(ac);
+					g2d.drawImage(image, sh.getBounds().x - dxy / 2, sh.getBounds().y - dxy / 2,null);
 				}
 			}
 		}

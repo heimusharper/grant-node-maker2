@@ -4,7 +4,11 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import ru.rintd.view.res.JButtonsStyles;
-
+/**
+ * toolbar с кнопками
+ * @author sheihar
+ *
+ */
 public class AppWindowButtonsJToolBar extends JToolBar {
 
 	/**

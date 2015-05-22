@@ -1,12 +1,9 @@
 package ru.rintd.view.res;
 
-import java.awt.Image;
 import java.awt.Insets;
 import java.net.URL;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

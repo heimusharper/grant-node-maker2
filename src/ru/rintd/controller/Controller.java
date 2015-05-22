@@ -420,8 +420,8 @@ public class Controller {
 			// log.info("LOCAL DIM:"+mainWindow.getBuildingPanelDimension());
 			// mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()),
 			// mainWindow.getBuildingPanelDimension());
-			mainWindow.setToDrawPolygons(model.getToDrawPolygons(),
-					model.getNodes(), mainWindow.getBuildingPanelDimension(),
+			mainWindow.setToDrawPolygons(
+					 mainWindow.getBuildingPanelDimension(),
 					model);
 			// mainWindow.init();
 			log.info("Set multi panel...");

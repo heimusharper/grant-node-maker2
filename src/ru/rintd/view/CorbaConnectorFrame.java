@@ -8,7 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
+/**
+ * подключение к сети
+ * @author sheihar
+ *
+ */
 public class CorbaConnectorFrame extends JFrame{
 
 	/**

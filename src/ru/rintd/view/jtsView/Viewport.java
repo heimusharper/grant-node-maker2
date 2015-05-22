@@ -10,7 +10,11 @@ import com.vividsolutions.jts.awt.PointTransformation;
 import com.vividsolutions.jts.geom.Coordinate;
 //import com.vividsolutions.jts.geom.Envelope;
 //import com.vividsolutions.jts.geom.PrecisionModel;
-
+/**
+ * афинные преобразования
+ * @author sheihar
+ *
+ */
 public class Viewport implements PointTransformation {
 
 	private AffineTransform modelToViewTransform;
@@ -52,8 +56,8 @@ public class Viewport implements PointTransformation {
 
 	private void updateModelToViewTransform() {
 		modelToViewTransform = new AffineTransform();
-		// modelToViewTransform.translate(0, viewSize.height);
-		// modelToViewTransform.scale(1, -1);
+		modelToViewTransform.translate(0, viewSize.height);
+		modelToViewTransform.scale(1, -1);
 		modelToViewTransform.scale(scale, scale);
 	}
 

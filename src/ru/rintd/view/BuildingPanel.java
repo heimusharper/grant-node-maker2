@@ -2,17 +2,12 @@ package ru.rintd.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.Model;
 import ru.rintd.view.jtsView.JtPanel;
@@ -21,6 +16,7 @@ import com.vividsolutions.jts.geom.Polygon;
 
 
 /**
+ * панель с планом здания
  * @author sheihar
  */
 
@@ -33,12 +29,25 @@ public class BuildingPanel extends JPanel {
 	// логгер
 	private static final Logger log = LogManager.getLogger(BuildingPanel.class
 			.getName());
+	/**
+	 * поэтажность
+	 */
 	private JTabbedPane tabbedPane;
-
+	/**
+	 * необходимые полигоны [этаж][полигон]
+	 */
 	private Polygon[][] polygons;
+	/**
+	 * этажи
+	 */
 	private JtPanel[] jtPanel;
-
+	/**
+	 * масштаб
+	 */
 	private double zoom = 1;
+	/**
+	 * шаг масштабирования
+	 */
 	private double dZoom = 0.2;
 
 	public BuildingPanel() {
