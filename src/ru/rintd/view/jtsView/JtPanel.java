@@ -189,29 +189,50 @@ public class JtPanel extends JPanel {
 							BuildElement be2 = model.getElementFromId(
 									buildElement.Output[1]).clone();
 							be2.Sign = buildElement.Sign;
+							
+							pol1 = pol1.intersection(polygons[i]);
+							pol2 = pol2.intersection(polygons[i]);
+							
 							pol2.setUserData(be2);
 							buffers.add(pol1);
 							buffers.add(pol2);
 						} catch (TopologyException | CloneNotSupportedException e) {
 							System.out.println(">2POL>" + buildElement.Id);
 							try {
-								buff = polygons[i].buffer(0.0);
+								buff = polygons[i].buffer(0.001);
 
 								buff = buff.buffer(0.2);
-								Geometry pol1 = buff.intersection(room0);
 
 								BuildElement be = model.getElementFromId(
 										buildElement.Output[0]).clone();
-								be.Sign = buildElement.Sign;
-								pol1.setUserData(be);
 
-								Geometry pol2 = buff.intersection(room1);
+								Polygon biffBe1 = hashMapPolys.get(be.Id);
+								biffBe1 = (Polygon) biffBe1.union(biffBe1.buffer(0.1));
+								hashMapPolys.remove(be.Id);
+								biffBe1.setUserData(be);
+								hashMapPolys.put(be.Id, biffBe1);
+								
+								be.Sign = buildElement.Sign;
+
 
 								BuildElement be2 = model.getElementFromId(
 										buildElement.Output[1]).clone();
-								be2.Sign = buildElement.Sign;
-								pol2.setUserData(be2);
+								
 
+								Polygon biffBe2 = hashMapPolys.get(be2.Id);
+								biffBe2 = (Polygon) biffBe2.union(biffBe2.buffer(0.1));
+								hashMapPolys.remove(be2.Id);
+								biffBe2.setUserData(be2);
+								hashMapPolys.put(be2.Id, biffBe2);
+								
+								be2.Sign = buildElement.Sign;
+
+								Geometry pol1 = buff.intersection(room0);
+								Geometry pol2 = buff.intersection(room1);
+								pol1.setUserData(be);
+								pol2.setUserData(be2);
+								pol1 = pol1.intersection(polygons[i]);
+								pol2 = pol2.intersection(polygons[i]);
 								buffers.add(pol1);
 								buffers.add(pol2);
 							} catch (TopologyException
@@ -232,6 +253,7 @@ public class JtPanel extends JPanel {
 								buildElement.Output[0]).clone();
 						be.Sign = buildElement.Sign;
 						pol1.setUserData(be);
+						pol1 = pol1.intersection(polygons[i]);
 						buffers.add(pol1);
 					} catch (TopologyException | CloneNotSupportedException e) {
 						System.out.println(">1POL>" + buildElement.Id);
@@ -299,7 +321,7 @@ public class JtPanel extends JPanel {
 					} catch (TopologyException e) {
 						System.out.println(">POINT>" + buildElement.Id);
 						try {
-							polygon = (Polygon) polygon.buffer(0.0);
+							polygon = (Polygon) polygon.buffer(0.1);
 							Point p = polygon.getCentroid();
 							p = polygon.getInteriorPoint();
 							centroids.add(p);
