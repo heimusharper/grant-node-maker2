@@ -9,11 +9,14 @@ import javax.swing.JTextArea;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
+import ru.rintd.controller.network.NodeInfo;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Node;
+
 /**
  * информационная панель
+ * 
  * @author sheihar
  *
  */
@@ -43,6 +46,56 @@ public class MultiPanel extends JPanel {
 		coords.setEditable(false);
 		add(coords);
 
+	}
+
+	public void setNode(Node node, NodeInfo info) {
+		String buildText = "";
+		buildText = buildText + "UUID: " + node.uid + "\n";
+		buildText = buildText + "H: " + node.h + "\n";
+		buildText = buildText + "Type: " + getNodeTypeString(node.type) + "\n";
+		buildText = buildText + "buildId: " + node.buildElID + "\n";
+		buildText = buildText + "XY: [" + node.xy[0] + ";" + node.xy[1] + "]\n";
+		if (info != null) {
+			buildText = buildText + "Node status\n";
+			buildText = buildText + "Is fire?: " + info.isFire + "\n";
+			buildText = buildText + "Density: " + (info.density * 100) + "% \n";
+			buildText = buildText + "Temperature: " + info.Temp + " C\n";
+			buildText = buildText + "Status: "
+					+ getNodeStatusString(info.status) + "\n";
+		}
+		area.setText(buildText);
+	}
+
+	private String getNodeStatusString(int status) {
+		switch (status) {
+		case 0:
+			return "NAN";
+		case 1:
+			return "Work";
+		case 2:
+			return "Sensor not work";
+		case 3:
+			return "Not signal";
+
+		default:
+			return "N/A";
+		}
+	}
+
+	private String getNodeTypeString(int type) {
+		switch (type) {
+		case 0:
+			return "Sensor";
+		case 1:
+			return "Light";
+		case 2:
+			return "Pointer";
+		case 3:
+			return "Server";
+
+		default:
+			return "N/A";
+		}
 	}
 
 	public void setBuildElement(BuildElement buildElement) {

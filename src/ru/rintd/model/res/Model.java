@@ -7,8 +7,11 @@ import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+import ru.rintd.controller.network.NodeInfo;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Json2Grid;
@@ -40,6 +43,10 @@ public class Model {
 	private static final Logger log = LogManager.getLogger(Model.class
 			.getName());
 
+	private ArrayList<HashMap<Point, Node>> toClick = new ArrayList<HashMap<Point, Node>>(); 
+	
+	private HashMap<Node, NodeInfo> nodeInfo = new HashMap<Node,NodeInfo>(); 
+	
 	public Model() {
 
 	}
@@ -60,9 +67,15 @@ public class Model {
 
 			for (int i = 0; i < building.Level.length; i++) {
 				nodes.add(new ArrayList<Node>());
+				toClick.add(new HashMap<Point, Node>());
 				if (building.Level[i].nodes != null)
 					for (int j = 0; j < building.Level[i].nodes.length; j++) {
 						nodes.get(i).add(building.Level[i].nodes[j]);
+						
+						Coordinate cs = new Coordinate(building.Level[i].nodes[j].xy[0], building.Level[i].nodes[j].xy[1]);
+						Point p = new Point(cs, null, 0);
+						toClick.get(i).put(p, building.Level[i].nodes[j]);
+						nodeInfo.put(building.Level[i].nodes[j], new NodeInfo());
 					}
 			}
 		} catch (IOException e) {
@@ -97,9 +110,19 @@ public class Model {
 
 		try {
 			nodes.get(level).add(node);
+			
+			Coordinate cs = new Coordinate(node.xy[0], node.xy[1]);
+			Point p = new Point(cs, null, 0);
+			toClick.get(level).put(p, node);
+			nodeInfo.put(node, new NodeInfo());
+			
 		} catch (IndexOutOfBoundsException e) {
 			nodes.set(level, new ArrayList<Node>());
 			nodes.get(level).add(node);
+			Coordinate cs = new Coordinate(node.xy[0], node.xy[1]);
+			Point p = new Point(cs, null, 0);
+			toClick.get(level).put(p, node);
+			nodeInfo.put(node, new NodeInfo());
 		}
 		log.info("Adding Node " + node + " into level " + level);
 	}
@@ -126,6 +149,7 @@ public class Model {
 		}
 		if (isBreaked) {
 			getNodesLevel(level).remove(i);
+			toClick.get(level).remove(node);
 			log.info("Node deleted! [ node " + node + " into level " + level
 					+ "]");
 			return;
@@ -169,6 +193,18 @@ public class Model {
 			return elementsMap.get(id);
 		}
 		return null;
+	}
+
+	public ArrayList<HashMap<Point, Node>> getToClick() {
+		return toClick;
+	}
+
+	public void setToClick(ArrayList<HashMap<Point, Node>> toClick) {
+		this.toClick = toClick;
+	}
+
+	public HashMap<Node, NodeInfo> getNodeInfo() {
+		return nodeInfo;
 	}
 	
 

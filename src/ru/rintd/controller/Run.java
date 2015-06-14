@@ -21,6 +21,7 @@ public class Run {
         log.info("Application start...");
         controller = new Controller();
 
+        
         controller.doShowMainWindow();
         /*
          * javax.swing.SwingUtilities.invokeLater(new Runnable() {

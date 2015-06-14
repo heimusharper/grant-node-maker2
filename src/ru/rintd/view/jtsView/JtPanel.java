@@ -15,20 +15,28 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import ru.rintd.controller.Controller;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.Model;
 import ru.rintd.view.res.JButtonsStyles;
+
 import com.vividsolutions.jts.awt.PointShapeFactory;
 import com.vividsolutions.jts.awt.ShapeWriter;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.TopologyException;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * 
@@ -93,11 +101,13 @@ public class JtPanel extends JPanel {
 
 	private int oldX = 0;
 	private int oldY = 0;
+
+	private int imageH = 16;
 	
 	/**
 	 * прозрачность узлов
 	 */
-	private float alpha =  0.7f;
+	private float alpha = 0.7f;
 
 	/**
 	 * 
@@ -177,7 +187,7 @@ public class JtPanel extends JPanel {
 					Polygon room1 = hashMapPolys.get(buildElement.Output[1]);
 
 					if (room0 != null && room1 != null) {
-						Geometry buff = polygons[i].buffer(0.2);
+						Geometry buff = polygons[i].buffer(1);
 						try {
 
 							Geometry pol1 = buff.intersection(room0);
@@ -189,10 +199,10 @@ public class JtPanel extends JPanel {
 							BuildElement be2 = model.getElementFromId(
 									buildElement.Output[1]).clone();
 							be2.Sign = buildElement.Sign;
-							
+
 							pol1 = pol1.intersection(polygons[i]);
 							pol2 = pol2.intersection(polygons[i]);
-							
+
 							pol2.setUserData(be2);
 							buffers.add(pol1);
 							buffers.add(pol2);
@@ -201,30 +211,30 @@ public class JtPanel extends JPanel {
 							try {
 								buff = polygons[i].buffer(0.001);
 
-								buff = buff.buffer(0.2);
+								buff = buff.buffer(1);
 
 								BuildElement be = model.getElementFromId(
 										buildElement.Output[0]).clone();
 
 								Polygon biffBe1 = hashMapPolys.get(be.Id);
-								biffBe1 = (Polygon) biffBe1.union(biffBe1.buffer(0.1));
+								biffBe1 = (Polygon) biffBe1.union(biffBe1
+										.buffer(0.1));
 								hashMapPolys.remove(be.Id);
 								biffBe1.setUserData(be);
 								hashMapPolys.put(be.Id, biffBe1);
-								
-								be.Sign = buildElement.Sign;
 
+								be.Sign = buildElement.Sign;
 
 								BuildElement be2 = model.getElementFromId(
 										buildElement.Output[1]).clone();
-								
 
 								Polygon biffBe2 = hashMapPolys.get(be2.Id);
-								biffBe2 = (Polygon) biffBe2.union(biffBe2.buffer(0.1));
+								biffBe2 = (Polygon) biffBe2.union(biffBe2
+										.buffer(0.1));
 								hashMapPolys.remove(be2.Id);
 								biffBe2.setUserData(be2);
 								hashMapPolys.put(be2.Id, biffBe2);
-								
+
 								be2.Sign = buildElement.Sign;
 
 								Geometry pol1 = buff.intersection(room0);
@@ -347,27 +357,7 @@ public class JtPanel extends JPanel {
 				for (int i = 0; i < centroids.size(); i++) {
 					Point point = centroids.get(i);
 					Shape s = shapeWriter.toShape(point);
-					if (ids.get(i)
-							.substring(ids.get(i).length() - 5,
-									ids.get(i).length() - 1).equals("52fa")
-							| ids.get(i)
-									.substring(ids.get(i).length() - 5,
-											ids.get(i).length() - 1)
-									.equals("0076")
-							| ids.get(i)
-									.substring(ids.get(i).length() - 5,
-											ids.get(i).length() - 1)
-									.equals("c1c1")
-							| ids.get(i)
-									.substring(ids.get(i).length() - 5,
-											ids.get(i).length() - 1)
-									.equals("ec8d")
-							| ids.get(i)
-									.substring(ids.get(i).length() - 5,
-											ids.get(i).length() - 1)
-									.equals("920e")) {
-						g2d.setColor(Color.GREEN);
-					}
+
 					g2d.drawString(
 							ids.get(i).substring(ids.get(i).length() - 5,
 									ids.get(i).length() - 1), s.getBounds().x,
@@ -421,18 +411,22 @@ public class JtPanel extends JPanel {
 						break;
 					}
 					int dxy = image.getHeight(null);
+					imageH = dxy;
 					Coordinate cs = new Coordinate(node.xy[0], node.xy[1]);
 					Point p = new Point(cs, null, 0);
-					//Point p = new Point(, null);
+					// Point p = new Point(, null);
 					Shape sh = shapeWriter.toShape(p);
-					
-//					g2d.drawImage(image,
-//							(int) (node.xy[0] * (scaler * zoom) - dxy / 2),
-//							(int) (node.xy[1] * (scaler * zoom) - dxy / 2),
-//							null);
-					AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+
+					// g2d.drawImage(image,
+					// (int) (node.xy[0] * (scaler * zoom) - dxy / 2),
+					// (int) (node.xy[1] * (scaler * zoom) - dxy / 2),
+					// null);
+					AlphaComposite ac = AlphaComposite.getInstance(
+							AlphaComposite.SRC_OVER, alpha);
 					g2d.setComposite(ac);
-					g2d.drawImage(image, sh.getBounds().x - dxy / 2, sh.getBounds().y - dxy / 2,null);
+					g2d.drawImage(image, sh.getBounds().x - dxy / 2,
+							sh.getBounds().y - dxy / 2, null);
+
 				}
 			}
 		}
@@ -546,6 +540,52 @@ public class JtPanel extends JPanel {
 			if (shape.contains(point2d)) {
 
 				return (BuildElement) polygon.getUserData();
+			}
+
+		}
+
+		return null;
+
+	}
+
+	public Node getXYNode(int x, int y) {
+
+		setscale();
+		// System.out.println(scaler);
+		viewport = new Viewport(this.getSize(), scaler * zoom);
+		shapeWriter = new ShapeWriter(this.viewport,
+				new PointShapeFactory.Point());
+		Coordinate cs = new Coordinate(x, y);
+		Point p = new Point(cs, null, 0);
+
+		// for (Point ps : model.getToClick().get(level).keySet()){
+		HashMap<Point, Node> pss = model.getToClick().get(level);
+		for (Map.Entry<Point, Node> ometry : pss.entrySet()) {
+
+			Point poi = ometry.getKey();
+			Shape sh = shapeWriter.toShape(poi);
+			/*
+			 * GeometryFactory mGF = new GeometryFactory(); Coordinate[] coords
+			 * = new Coordinate[5]; coords[0] = new
+			 * Coordinate(poi.getX()-zoom/2, poi.getY()-zoom/2); coords[0] = new
+			 * Coordinate(poi.getX()+zoom/2, poi.getY()-zoom/2); coords[0] = new
+			 * Coordinate(poi.getX()+zoom/2, poi.getY()+zoom/2); coords[0] = new
+			 * Coordinate(poi.getX()-zoom/2, poi.getY()+zoom/2); coords[0] = new
+			 * Coordinate(poi.getX()-zoom/2, poi.getY()-zoom/2); LinearRing lr =
+			 * new LinearRing(new CoordinateArraySequence(coords),
+			 * poi.getFactory()); Polygon poli = new Polygon(lr, null,
+			 * poi.getFactory());
+			 * 
+			 * //Geometry g = ometry.getKey().buffer(zoom); if
+			 * (poli.contains(p)){ return
+			 * model.getToClick().get(level).get(ometry.getValue()); }
+			 */
+			if (sh.getBounds().x + imageH / 2 >= p.getX()
+					&& sh.getBounds().x - imageH / 2 <= p.getX()
+					&& sh.getBounds().y + imageH / 2 >= p.getY()
+					&& sh.getBounds().y - imageH / 2 <= p.getY()) {
+				Node n = ometry.getValue();
+				return n;
 			}
 
 		}

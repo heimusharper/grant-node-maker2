@@ -8,12 +8,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.omg.CORBA.ORBPackage.InvalidName;
+import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
+import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
+
 import com.vividsolutions.jts.geom.Coordinate;
+
+import ru.rintd.controller.network.Connector;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Building;
 import ru.rintd.json2grid.Json2Grid;
@@ -58,6 +67,8 @@ public class Controller {
 	private final int ADD_POINTER = 3;
 	private final int ADD_SERVER = 4;
 
+	private Connector connector;
+
 	// размеры изображения
 	private Dimension windowDimension;
 
@@ -93,6 +104,27 @@ public class Controller {
 				log.info("Setting actions...");
 				configureActions();
 
+				try {
+					connector = new Connector(null, "127.0.0.1:38011");
+					connector.Add_Node("111111");
+					/*
+					 * Runtime.getRuntime().addShutdownHook( new Thread(new
+					 * Runnable() { public void run() { connector.unregister();
+					 * } }));
+					 */
+				} catch (InvalidName e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (AdapterInactive e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ServantNotActive e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (WrongPolicy e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -232,18 +264,18 @@ public class Controller {
 
 			}
 		});
-		
+
 		mainWindow.setUndoButtonActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				actionS.back();
 				repaintWindow();
 			}
 		});
-		
+
 		mainWindow.setRendoButtonActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				actionS.forvard();
@@ -275,40 +307,53 @@ public class Controller {
 				public void mouseClicked(MouseEvent e) {
 
 					log.info("Click to [" + e.getX() + "; " + e.getY() + "]");
-					// поиск элемента
-					BuildElement buildElement = jtPanel.getXYelement(e.getX(),
-							e.getY());
-					// System.out.println(">"+buildElement.Id);
-					if (buildElement == null) {
-						log.info("Outside building!");
-						// вне здания - вывод информации о здании
-						multiPanel.setBuilding(model.getBuilding());
+					// поиск узла
+					Node n = jtPanel.getXYNode(e.getX(), e.getY());
+					if (n != null) {
+						log.info("Select Node", n.toString());
+						if (n.uid != null) {
+							multiPanel.setNode(n, model.getNodeInfo().get(n));
+						} else
+							multiPanel.setNode(n, null);
 					} else {
-						log.info("Inside the building!");
-						// попали в элемент - вывод инфы о элементе
-						multiPanel.setBuildElement(buildElement);
-						if ((instrument == ADD_SENSOR && !JtPanel
-								.isDoor(buildElement.Sign))
-								|| (instrument == ADD_LIGHT && JtPanel
-										.isDoor(buildElement.Sign))
-								|| (instrument == ADD_POINTER && !JtPanel
-										.isDoor(buildElement.Sign))
-								|| (instrument == ADD_SERVER && !JtPanel
-										.isDoor(buildElement.Sign))) {
-							log.info("Add new Node...");
-							// добавление сенсора
-							Coordinate coord = jtPanel.getPoint(e.getPoint());
-							log.info("Converted coordinates [" + e.getPoint().x
-									+ "; " + e.getPoint().y + "] -> ["
-									+ coord.x + "; " + coord.y + "]");
-							multiPanel.setClick(coord);
-							Node node = new Node(buildElement.Id, instrument,
-									coord.x, coord.y);
-							log.info("Node: " + node + " push");
-							actionS.push(new AddNodeSomeAction(node, is));
-							multiPanel.setNodeTree(model.getNodes());
-							jtPanel.repaint();
-							// jtPanel.setNodes(model.getNodesLevel(is));
+
+						// поиск элемента
+						BuildElement buildElement = jtPanel.getXYelement(
+								e.getX(), e.getY());
+						// System.out.println(">"+buildElement.Id);
+						if (buildElement == null) {
+							log.info("Outside building!");
+							// вне здания - вывод информации о здании
+							multiPanel.setBuilding(model.getBuilding());
+						} else {
+							log.info("Inside the building!");
+							// попали в элемент - вывод инфы о элементе
+							multiPanel.setBuildElement(buildElement);
+							if ((instrument == ADD_SENSOR && !JtPanel
+									.isDoor(buildElement.Sign))
+									|| (instrument == ADD_LIGHT && JtPanel
+											.isDoor(buildElement.Sign))
+									|| (instrument == ADD_POINTER && !JtPanel
+											.isDoor(buildElement.Sign))
+									|| (instrument == ADD_SERVER && !JtPanel
+											.isDoor(buildElement.Sign))) {
+								log.info("Add new Node...");
+								// добавление сенсора
+								Coordinate coord = jtPanel.getPoint(e
+										.getPoint());
+								log.info("Converted coordinates ["
+										+ e.getPoint().x + "; "
+										+ e.getPoint().y + "] -> [" + coord.x
+										+ "; " + coord.y + "]");
+								multiPanel.setClick(coord);
+								Node node = new Node(buildElement.Id,
+										instrument, coord.x, coord.y);
+								log.info("Node: " + node + " push");
+								actionS.push(new AddNodeSomeAction(node, is));
+								multiPanel.setNodeTree(model.getNodes());
+								jtPanel.repaint();
+								// jtPanel.setNodes(model.getNodesLevel(is));
+							}
 						}
 					}
 					super.mouseClicked(e);
@@ -317,7 +362,7 @@ public class Controller {
 			});
 			i++;
 		}
-		
+
 		multiPanel.setNodeTree(model.getNodes());
 	}
 
@@ -421,8 +466,7 @@ public class Controller {
 			// mainWindow.setToDrawPolygons(model.getToDrawPolygons(mainWindow.getBuildingPanelDimension()),
 			// mainWindow.getBuildingPanelDimension());
 			mainWindow.setToDrawPolygons(
-					 mainWindow.getBuildingPanelDimension(),
-					model);
+					mainWindow.getBuildingPanelDimension(), model);
 			// mainWindow.init();
 			log.info("Set multi panel...");
 			setMultiPanel();
