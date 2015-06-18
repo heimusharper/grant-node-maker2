@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import ru.rintd.controller.Controller;
+import ru.rintd.controller.network.NodeInfo;
 import ru.rintd.json2grid.BuildElement;
 import ru.rintd.json2grid.Node;
 import ru.rintd.model.res.Model;
@@ -103,7 +104,7 @@ public class JtPanel extends JPanel {
 	private int oldY = 0;
 
 	private int imageH = 16;
-	
+
 	/**
 	 * прозрачность узлов
 	 */
@@ -385,6 +386,8 @@ public class JtPanel extends JPanel {
 				}
 			}
 			// узлы
+			g2d.setFont(new Font(Controller.appPreferences.fontPlan,
+					getFontType(Controller.appPreferences.fontType), 14));
 			for (Node node : model.getNodesLevel(level)) {
 				if (node.type == 1 || node.type == 2 || node.type == 3
 						|| node.type == 4) {
@@ -426,6 +429,32 @@ public class JtPanel extends JPanel {
 					g2d.setComposite(ac);
 					g2d.drawImage(image, sh.getBounds().x - dxy / 2,
 							sh.getBounds().y - dxy / 2, null);
+					
+					NodeInfo info = model.getNodeInfo().get(node);
+					if (info.Temp < 35)
+						g2d.setColor(Color.GREEN);
+					if (info.Temp < 60)
+						g2d.setColor(Color.YELLOW);
+					if (info.Temp >= 60)
+						g2d.setColor(Color.RED);
+					g2d.drawString(""+info.Temp, sh.getBounds().x - dxy / 2,
+							sh.getBounds().y - dxy);
+					if (info.battery >= 30)
+						g2d.setColor(Color.GREEN);
+					if (info.battery < 30)
+						g2d.setColor(Color.YELLOW);
+					if (info.battery < 10)
+						g2d.setColor(Color.RED);
+					g2d.drawString(""+info.battery, sh.getBounds().x + dxy,
+							sh.getBounds().y);
+					if (info.density < 40)
+						g2d.setColor(Color.GREEN);
+					if (info.density < 80)
+						g2d.setColor(Color.YELLOW);
+					if (info.density >= 80)
+						g2d.setColor(Color.RED);
+					g2d.drawString(""+info.density, sh.getBounds().x - dxy*3,
+							sh.getBounds().y);
 
 				}
 			}

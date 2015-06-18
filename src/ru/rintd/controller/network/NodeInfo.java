@@ -12,6 +12,7 @@ public class NodeInfo {
 	 * 3 -- not signal
 	 */
 	public int status = 3;
+	public int battery = 100;
 	
 	
 }
